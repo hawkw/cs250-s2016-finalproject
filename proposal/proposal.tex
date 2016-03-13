@@ -53,7 +53,12 @@ In the Haskell programming language, the standard library's generic sequence typ
 
 \section{Proposal}
 
-\newthought{We intend to implement and evaluate} 2-3 finger trees in the Scala programming language.
+\newthought{We intend to implement and evaluate} 2-3 finger trees in the Scala programming language. Our implementation will be designed in a modular manner, so that once we have a working finger tree, we can easily write multiple APIs allowing our finger tree implementation to be used as a variety of sequence-based data structures, such as a list, a queue, a stack, a deque, and an ordered sequence.
+
+As Scala provides rich APIs for working with collections, we will ensure that the data structures we implement using our finger tree conform with the Scala sequence APIs. This will allow our finger-tree-based sequences to be used as a drop-in replacement in code that currently uses the standard library's sequence types. 
+
+\newthought{Our implementation process} will follow the software engineering paradigm of test-first development. In this approach, a suite of unit tests acts as a testable specification to guide implementation. We will begin by writing a complete unit test suite that describes the expected behavior of a finger tree. Initially, since the data structure is unimplemented, all these tests will fail. 
+
 
 \bibliography{bibliography}
 \bibliographystyle{plainnat}
