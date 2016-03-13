@@ -57,7 +57,11 @@ In the Haskell programming language, the standard library's generic sequence typ
 
 As Scala provides rich APIs for working with collections, we will ensure that the data structures we implement using our finger tree conform with the Scala sequence APIs. This will allow our finger-tree-based sequences to be used as a drop-in replacement in code that currently uses the standard library's sequence types. 
 
-\newthought{Our implementation process} will follow the software engineering paradigm of test-first development. In this approach, a suite of unit tests acts as a testable specification to guide implementation. We will begin by writing a complete unit test suite that describes the expected behavior of a finger tree. Initially, since the data structure is unimplemented, all these tests will fail. 
+\newthought{Our implementation process} will follow the software engineering paradigm of test-driven development. In this approach, a suite of unit tests acts as a testable specification to guide implementation. We will begin by writing a complete unit test suite that describes the expected behavior of a finger tree. Initially, since the data structure is unimplemented, all these tests will fail. As aspects of the finger tree's functionality is implemented, the corresponding unit tests will pass once the tested behavior is written correctly. Using test-driven development helps to insure that code is not left untested, as well as providing an indicator of the progress of development. It also obviates the need to write tests based on a specification, as the tests \textit{are} the specification.
+
+Furthermore, we will also write some short sample programs, which demonstrate the use of our data structures in real programs. These sample programs will be drawn from problems stated in the review sections in Sedgewick and Wayne's \textit{Algorithms, Fourth Edition}.
+
+\newthought{In addition to testing for the correctness} of our implementation, we will also want to assess its performance. Thus, we will write a comprehensive set of benchmarks which will test our finger-tree based collections against those from the standard library. Additionally, our sample demonstration programs could be used to measure the performance of our data structures in real applications. Since our data structures will provide the same APIs as the data structures in the Scala standard library, it will be simple to write sample code to compare finger tree-based sequences with list and array-based ones.
 
 
 \bibliography{bibliography}
