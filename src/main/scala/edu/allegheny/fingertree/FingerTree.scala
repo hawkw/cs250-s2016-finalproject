@@ -1,7 +1,6 @@
 package edu.allegheny.fingertree
 
-/**
-  * Trait defining [[FingerTree]] operations
+/** Trait defining [[FingerTree]] operations
   *
   * @tparam V the type of the measure
   * @tparam A the type of the elements stored in the tree
@@ -13,8 +12,7 @@ package edu.allegheny.fingertree
   */
 sealed trait FingerTree[V, +A] {
 
-  /**
-    * Prepend an element.
+  /** Prepend an element.
     *
     * Prepends an element to this finger tree, returning a copy with that
     * element prepended.
@@ -27,8 +25,7 @@ sealed trait FingerTree[V, +A] {
     */
   def prepend[A1 >: A](x: A1): FingerTree[V, A1]
 
-  /**
-    * Append an element.
+  /** Append an element.
     *
     * Appends an element to this finger tree, returning a copy with that
     * element appended.
