@@ -1,4 +1,6 @@
-\documentclass[a4paper]{tufte-handout}
+\documentclass[a4paper,nobib]{tufte-handout}
+
+
 \usepackage{url}
 \usepackage{setspace}
 
@@ -10,7 +12,7 @@
 
 \usepackage{graphicx} % allow embedded images
   \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-  % \graphicspath{{../imgs/}} % set of paths to search for images
+  \graphicspath{{../imgs/}} % set of paths to search for images
 \usepackage{amsmath}  % extended mathematics
 \usepackage{booktabs}
 \usepackage{units}    % non-stacked fractions and better unit spacing
@@ -20,7 +22,6 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{placeins}
-
 
 \setminted{ style=trac
           %, fontfamily = fvm
@@ -37,6 +38,19 @@
 \begin{document}
 
 \maketitle
+\begin{abstract}
+Finger trees are a data structure used to implement other common data structures in a purely functional manner.\cite{Hinze:2006:FTS:1114670.1114674} Finger trees are immutable and persistent, and can be used to implement structures such as sequences, indexed sequences, and other non-tree data structures, providing improved performance over other immutable data structures such as linked lists. In this proposal, we discuss our plan to develop a finger tree implementation as a library in the Scala programming language, and to demonstrate its performance and effectiveness. 
+\end{abstract}
 
-\newthought{Finger trees} are a data structure used to implement other common data structures in a purely functional manner.
+\section{Motivation}
+\newthought{In functional programming}, the use of \textit{pure functions} is either encouraged or enforced. Pure functions are those which do not cause modifications to external state;\footnote{Often referred to as `side effects'.} rather, any state changes caused by a function must be encapsulated in its return value.\cite{JFP:44143} While it may at first seem counterintuitive, requiring programmmers to use only pure functions can have many benefits, such as making code more modular and easier to debug, eliminating common classes of concurrent-access errors, and enabling a wide variety of static analyses and compile-time optimizations.
+
+In order to facilitate this style of programming, we should like to implement purely-functional data structures. Such data structures should be \textit{immutable}, meaning that rather than being modified in-place, they are modified by creating a copy of the data structure with the changes applied.\cite{okasaki1999purely} As choosing to use purely-functional data structures rather than mutable ones can have performance disadvantages, we should take care to ensure that our implementations of these structures are are as efficient as possible.
+
+\newthought{Finger trees}
+
+\bibliography{bibliography}
+\bibliographystyle{plainnat}
+% \printbibliography
 \end{document}
+%
