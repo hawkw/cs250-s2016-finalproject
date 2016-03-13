@@ -31,7 +31,7 @@
         %   , framerule = 0.4pt
         %   , framesep = 2mm
           , linenos = true
-          , numberblanklines = true
+          , numberblanklines =There are a couple  true
           }
 \title{CMPSC250 Final Project Proposal}
 \author{Aubrey Collins and Hawk Weisman}
@@ -39,7 +39,7 @@
 
 \maketitle
 \begin{abstract}
-Finger trees are a data structure used to implement other common data structures in a purely functional manner.\cite{Hinze:2006:FTS:1114670.1114674} Finger trees are immutable and persistent, and can be used to implement structures such as sequences, indexed sequences, and other non-tree data structures, providing improved performance over other immutable data structures such as linked lists. In this proposal, we discuss our plan to develop a finger tree implementation as a library in the Scala programming language, and to demonstrate its performance and effectiveness. 
+2-3 finger trees are a data structure used to implement other common data structures in a purely functional manner.\cite{Hinze:2006:FTS:1114670.1114674} Finger trees are immutable and persistent, and can be used to implement structures such as sequences, indexed sequences, and other non-tree data structures, providing improved performance over other immutable data structures such as linked lists. In this proposal, we discuss our plan to develop a finger tree implementation as a library in the Scala programming language, and to demonstrate its performance and effectiveness.
 \end{abstract}
 
 \section{Motivation}
@@ -47,7 +47,13 @@ Finger trees are a data structure used to implement other common data structures
 
 In order to facilitate this style of programming, we should like to implement purely-functional data structures. Such data structures should be \textit{immutable}, meaning that rather than being modified in-place, they are modified by creating a copy of the data structure with the changes applied.\cite{okasaki1999purely} As choosing to use purely-functional data structures rather than mutable ones can have performance disadvantages, we should take care to ensure that our implementations of these structures are are as efficient as possible.
 
-\newthought{Finger trees}
+\newthought{2-3 finger trees}, first proposed by \citeauthor{Hinze:2006:FTS:1114670.1114674}, provide a way to implement sequence data structures which provide amortized $\mathcal{O}(1)$ access and $\mathcal{O}(\log n)$ split and append operations. They may be easily adapted to implement indexed oI'r ordered sequences as well.\cite{Hinze:2006:FTS:1114670.1114674} Sequence types are often implemented with linked list structures, for which accessing an arbitrary position in the sequence has a worst-case time complexity of $\mathcal{O}(n)$. Thus, we can see that the use of 2-3 finger trees is likely to offer significant performance advantages.
+
+In the Haskell programming language, the standard library's generic sequence type (\Verb|Data.Sequence|) is implemented using finger trees.\cite{data_sequence} While the Scala programming language offers similar generic immutable sequence types, they are implemented using either linked-lists or arrays.\cite{scala_lib}
+
+\section{Proposal}
+
+\newthought{We intend to implement and evaluate} 2-3 finger trees in the Scala programming language.
 
 \bibliography{bibliography}
 \bibliographystyle{plainnat}
