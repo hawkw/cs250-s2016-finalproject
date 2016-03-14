@@ -60,7 +60,8 @@ trait Measure[V, @specialized(Int, Long, Float, Double) -A] {
     * @param b
     * @return
     */
-  @inline final def |+|(a: V, b: V): V = combine(a, b)
+  @inline final def |+|(a: V, b: V): V
+    = combine(a, b)
 
   /** The combine (⊗) operator for varargs.
     *
@@ -68,7 +69,7 @@ trait Measure[V, @specialized(Int, Long, Float, Double) -A] {
     * @return
     */
   @throws[IllegalArgumentException]("if no arguments are passed")
-  @inline final def |+|(xs: V*)
+  @inline final def |+|(xs: V*): V
     = { require(xs.nonEmpty); xs reduce |+| }
 
   /** The combine (⊗) operator for people who like using crazy unicode
@@ -87,7 +88,7 @@ trait Measure[V, @specialized(Int, Long, Float, Double) -A] {
     * @return
     */
   @throws[IllegalArgumentException]("if no arguments are passed")
-  @inline final def ⊗(xs: V*)
+  @inline final def ⊗(xs: V*): V
     = { require(xs.nonEmpty); xs reduce ⊗ }
 
   @inline final def apply(a: A): V = measure(a)
