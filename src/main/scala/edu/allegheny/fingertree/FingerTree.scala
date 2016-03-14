@@ -84,26 +84,25 @@ sealed trait FingerTree[V, +A] {
     */
   def init(implicit m: Measure[V, A]): Self
 
-  /** Selects all elements except the first.
-    *  @param m a [[Measure]] to use when updating the tree's structure
-    *  @return  a `FingerTree` consisting of all elements of this `FingerTree`
-    *           except the first one.
-    *  @throws NoSuchElementException if the `FingerTree` is empty.
-    */
-  def tail(implicit m: Measure[V, A]): A
-
-  /** Selects the first element of this `FingerTree`.
-    *  @param m a [[Measure]] to use when updating the tree's structure
-    *  @return  the first element of this `FingerTree`.
-    *  @throws NoSuchElementException if the `FingerTree` is empty.
-    */
-  def head(implicit m: Measure[V, A]): A
-
   /** Selects the last element of this `FingerTree`.
     *  @param m a [[Measure]] to use when updating the tree's structure
     *  @return  the last element of this `FingerTree`.
     *  @throws NoSuchElementException if the `FingerTree` is empty.
     */
   def last(implicit m: Measure[V, A]): Self
+
+  /** Selects the first element of this `FingerTree`.
+    *  @return  the first element of this `FingerTree`.
+    *  @throws NoSuchElementException if the `FingerTree` is empty.
+    */
+  def head: A
+
+  /** Selects all elements except the first.
+    *  @return  a `FingerTree` consisting of all elements of this `FingerTree`
+    *           except the first one.
+    *  @throws NoSuchElementException if the `FingerTree` is empty.
+    */
+  def tail: A
+
 
 }
