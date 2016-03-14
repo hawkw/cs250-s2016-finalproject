@@ -1,5 +1,6 @@
 package edu.allegheny.fingertree
 
+
 /** Trait for a measure on a [[FingerTree]].
   *
   * A measure on a [[FingerTree]] is essentially a `Monoid`.
@@ -17,7 +18,7 @@ package edu.allegheny.fingertree
   *
   * Created by hawk on 3/14/16.
   */
-trait Measure[V, -A] {
+trait Measure[V, @specialized(Int, Long, Float, Double) -A] {
 
   /** Return the identity measure.
     *
@@ -27,6 +28,13 @@ trait Measure[V, -A] {
     * @return the identity measure
     */
   def empty: V
+
+  /** Returns true if `a` is the identity
+    *
+    * @param a
+    * @return
+    */
+  final def isEmpty(a: V): Boolean = a == empty
 
   /** Apply the measure to a `V`
     *
@@ -76,7 +84,6 @@ trait Measure[V, -A] {
     * @return
     */
   @inline final def ⊗(xs: V*) = xs reduce ⊗
-
 
   @inline final def apply(a: A): V = measure(a)
 
