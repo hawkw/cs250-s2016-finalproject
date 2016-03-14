@@ -19,10 +19,11 @@ sealed trait FingerTree[V, +A] {
     * Prepends an element to this finger tree, returning a copy with that
     * element prepended.
     *
-    * @param  x  the prepended element
-    * @tparam A1 the element type of the prepended element
-    * @return    a new collection of type `FingerTree[V, A1]` consisting of `x`
-    *            followed by all elements of this `FingerTree`.
+    *  @param  x  the prepended element
+    *  @param  m  a [[Measure]] to use when updating the tree's structure
+    *  @tparam A1 the element type of the prepended element
+    *  @return    a new collection of type `FingerTree[V, A1]` consisting of `x`
+    *             followed by all elements of this `FingerTree`.
     *
     */
   def prepend[A1 >: A](x: A1)(implicit m: Measure[V, A1]): FingerTree[V, A1]
@@ -33,6 +34,7 @@ sealed trait FingerTree[V, +A] {
     * element appended.
     *
     *  @param  x   the appended element
+    *  @param  m   a [[Measure]] to use when updating the tree's structure
     *  @tparam A1  the element type of the appended element
     *  @return     a new collection of type `FingerTree[V, A1]` consisting of
     *              all the elements of this `FingerTree` followed by `x`.
@@ -43,6 +45,7 @@ sealed trait FingerTree[V, +A] {
   /** A copy of this `FingerTree` with an element prepended.
     *
     *  @param  x  the prepended element
+    *  @param  m  a [[Measure]] to use when updating the tree's structure
     *  @tparam A1 the element type of the prepended element
     *  @return    a new collection of type `FingerTree[V, A1]` consisting of `x`
     *             followed by all elements of this `FingerTree`.
@@ -59,6 +62,7 @@ sealed trait FingerTree[V, +A] {
   /** A copy of this `FingerTree` with an element appended.
     *
     *  @param  x   the appended element
+    *  @param  m   a [[Measure]] to use when updating the tree's structure
     *  @tparam A1  the element type of the appended element
     *  @return     a new collection of type `FingerTree[V, A1]` consisting of
     *              all the elements of this `FingerTree` followed by `x`.
@@ -72,7 +76,34 @@ sealed trait FingerTree[V, +A] {
   def :+[A1 >: A](x: A1)(implicit m: Measure[V, A1]): FingerTree[V, A1]
     = append(x)
 
+  /** Selects all elements except the last.
+    *  @param m a [[Measure]] to use when updating the tree's structure
+    *  @return  a `FingerTree` consisting of all elements of this `FingerTree`
+    *           except the last one.
+    *  @throws UnsupportedOperationException if the `FingerTree` is empty.
+    */
   def init(implicit m: Measure[V, A]): Self
-  def head(implicit m: Measure[V, A]): Self
+
+  /** Selects all elements except the first.
+    *  @param m a [[Measure]] to use when updating the tree's structure
+    *  @return  a `FingerTree` consisting of all elements of this `FingerTree`
+    *           except the first one.
+    *  @throws NoSuchElementException if the `FingerTree` is empty.
+    */
+  def tail(implicit m: Measure[V, A]): A
+
+  /** Selects the first element of this `FingerTree`.
+    *  @param m a [[Measure]] to use when updating the tree's structure
+    *  @return  the first element of this `FingerTree`.
+    *  @throws NoSuchElementException if the `FingerTree` is empty.
+    */
+  def head(implicit m: Measure[V, A]): A
+
+  /** Selects the last element of this `FingerTree`.
+    *  @param m a [[Measure]] to use when updating the tree's structure
+    *  @return  the last element of this `FingerTree`.
+    *  @throws NoSuchElementException if the `FingerTree` is empty.
+    */
+  def last(implicit m: Measure[V, A]): Self
 
 }
