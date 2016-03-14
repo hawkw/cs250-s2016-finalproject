@@ -1,5 +1,4 @@
-Finger Trees in Scala [![Build Status](https://travis-ci
-.org/hawkw/cs250-s2016-finalproject.svg?branch=master)](https://travis-ci.org/hawkw/cs250-s2016-finalproject) [![Codacy Badge](https://api.codacy.com/project/badge/grade/a7e9e2b8213c43f7afd419e1750f90f1)](https://www.codacy.com/app/hawk/cs250-s2016-finalproject)
+Finger Trees in Scala [![Build Status](https://travis-ci.org/hawkw/cs250-s2016-finalproject.svg?branch=master)](https://travis-ci.org/hawkw/cs250-s2016-finalproject) [![Codacy Badge](https://api.codacy.com/project/badge/grade/a7e9e2b8213c43f7afd419e1750f90f1)](https://www.codacy.com/app/hawk/cs250-s2016-finalproject)
 =====================
 
 Aubrey Collins & Hawk Weisman, CMPSC250 Spring 2016 Final Project 
