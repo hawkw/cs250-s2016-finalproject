@@ -6,6 +6,4 @@ package edu.allegheny
   *
   * Created by hawk on 3/13/16.
   */
-package object fingertree {
-
-}
+package object fingertree
