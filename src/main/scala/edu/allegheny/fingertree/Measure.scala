@@ -1,5 +1,6 @@
 package edu.allegheny.fingertree
 
+import org.scalactic.Requirements._
 
 /** Trait for a measure on a [[FingerTree]].
   *
@@ -66,7 +67,9 @@ trait Measure[V, @specialized(Int, Long, Float, Double) -A] {
     * @param xs
     * @return
     */
-  @inline final def |+|(xs: V*) = xs reduce |+|
+  @throws[IllegalArgumentException]("if no arguments are passed")
+  @inline final def |+|(xs: V*)
+    = { require(xs.nonEmpty); xs reduce |+| }
 
   /** The combine (⊗) operator for people who like using crazy unicode
     * symbols in their code.
@@ -83,7 +86,9 @@ trait Measure[V, @specialized(Int, Long, Float, Double) -A] {
     * @param xs
     * @return
     */
-  @inline final def ⊗(xs: V*) = xs reduce ⊗
+  @throws[IllegalArgumentException]("if no arguments are passed")
+  @inline final def ⊗(xs: V*)
+    = { require(xs.nonEmpty); xs reduce ⊗ }
 
   @inline final def apply(a: A): V = measure(a)
 
