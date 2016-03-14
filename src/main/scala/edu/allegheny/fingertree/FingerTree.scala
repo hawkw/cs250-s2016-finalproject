@@ -14,6 +14,19 @@ sealed trait FingerTree[V, +A] {
 
   protected[this] type Self = FingerTree[V, A]
 
+  /** Tests whether this `FingerTree` is empty.
+    *
+    *  @return `true` if the `FingerTree` contains no elements,
+    *          `false` otherwise.
+    */
+  def isEmpty: Boolean
+
+  /** Tests whether this `FingerTree` is non-empty.
+    *
+    *  @return `true` if the `FingerTree` contains elements, `false` otherwise.
+    */
+  @inline final def nonEmpty: Boolean = !isEmpty
+
   /** Prepend an element.
     *
     * Prepends an element to this finger tree, returning a copy with that
@@ -84,12 +97,12 @@ sealed trait FingerTree[V, +A] {
     */
   def init(implicit m: Measure[V, A]): Self
 
-  /** Selects the last element of this `FingerTree`.
-    *  @param m a [[Measure]] to use when updating the tree's structure
-    *  @return  the last element of this `FingerTree`.
+  /** Selects all elements except the first.
+    *  @return  a `FingerTree` consisting of all elements of this `FingerTree`
+    *           except the first one.
     *  @throws NoSuchElementException if the `FingerTree` is empty.
     */
-  def last(implicit m: Measure[V, A]): Self
+  def tail(implicit m: Measure[V, A]): Self
 
   /** Selects the first element of this `FingerTree`.
     *  @return  the first element of this `FingerTree`.
@@ -97,12 +110,27 @@ sealed trait FingerTree[V, +A] {
     */
   def head: A
 
-  /** Selects all elements except the first.
-    *  @return  a `FingerTree` consisting of all elements of this `FingerTree`
-    *           except the first one.
+  /** Optionally selects the first element.
+    *
+    *  @return  the first element of this `FingerTree` if it is non-empty,
+    *           `None` if it is empty.
+    */
+  @inline final def headOption: Option[A]
+    = if (nonEmpty) Some(head) else None
+
+  /** Selects the last element of this `FingerTree`.
+    *  @return  the last element of this `FingerTree`.
     *  @throws NoSuchElementException if the `FingerTree` is empty.
     */
-  def tail: A
+  def last: A
+
+  /** Optionally selects the last element.
+    *
+    *  @return  the first element of this `FingerTree` if it is non-empty,
+    *           `None` if it is empty.
+    */
+  @inline final def lastOption: Option[A]
+    = if (nonEmpty) Some(last) else None
 
 
 }
