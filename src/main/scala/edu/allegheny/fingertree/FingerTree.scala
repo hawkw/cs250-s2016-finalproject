@@ -115,7 +115,7 @@ sealed trait FingerTree[V, +A] {
     *  @return  the first element of this `FingerTree` if it is non-empty,
     *           `None` if it is empty.
     */
-  @inline final def headOption: Option[A]
+  @inline def headOption: Option[A]
     = if (nonEmpty) Some(head) else None
 
   /** Selects the last element of this `FingerTree`.
@@ -129,7 +129,7 @@ sealed trait FingerTree[V, +A] {
     *  @return  the first element of this `FingerTree` if it is non-empty,
     *           `None` if it is empty.
     */
-  @inline final def lastOption: Option[A]
+  @inline def lastOption: Option[A]
     = if (nonEmpty) Some(last) else None
 
 
