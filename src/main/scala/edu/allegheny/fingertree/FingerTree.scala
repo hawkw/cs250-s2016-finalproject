@@ -12,6 +12,8 @@ package edu.allegheny.fingertree
   */
 sealed trait FingerTree[V, +A] {
 
+  protected[this] type Self = FingerTree[V, A]
+
   /** Prepend an element.
     *
     * Prepends an element to this finger tree, returning a copy with that
@@ -23,7 +25,7 @@ sealed trait FingerTree[V, +A] {
     *            followed by all elements of this `FingerTree`.
     *
     */
-  def prepend[A1 >: A](x: A1): FingerTree[V, A1]
+  def prepend[A1 >: A](x: A1)(implicit m: Measure[V, A1]): FingerTree[V, A1]
 
   /** Append an element.
     *
@@ -36,7 +38,7 @@ sealed trait FingerTree[V, +A] {
     *              all the elements of this `FingerTree` followed by `x`.
     *
     */
-  def append[A1 >: A](x: A1): FingerTree[V, A1]
+  def append[A1 >: A](x: A1)(implicit m: Measure[V, A1]): FingerTree[V, A1]
 
   /** A copy of this `FingerTree` with an element prepended.
     *
@@ -51,7 +53,8 @@ sealed trait FingerTree[V, +A] {
     *  Also, the original `FingerTree` is not modified, so you will want to
     *  capture the result.
     */
-  def +:[A1 >: A](x: A1): FingerTree[V, A1] = prepend(x)
+  def +:[A1 >: A](x: A1)(implicit m: Measure[V, A1]): FingerTree[V, A1]
+    = prepend(x)
 
   /** A copy of this `FingerTree` with an element appended.
     *
@@ -66,6 +69,10 @@ sealed trait FingerTree[V, +A] {
     *  Also, the original `FingerTree` is not modified, so you will want to
     *  capture the result.
     */
-  def :+[A1 >: A](x: A1): FingerTree[V, A1] = append(x)
+  def :+[A1 >: A](x: A1)(implicit m: Measure[V, A1]): FingerTree[V, A1]
+    = append(x)
+
+  def init(implicit m: Measure[V, A]): Self
+  def head(implicit m: Measure[V, A]): Self
 
 }
