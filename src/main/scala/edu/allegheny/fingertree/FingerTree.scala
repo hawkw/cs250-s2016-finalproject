@@ -132,5 +132,13 @@ sealed trait FingerTree[V, +A] {
   @inline def lastOption: Option[A]
     = if (nonEmpty) Some(last) else None
 
+  /** @return A new iterator over the elements of this `FingerTree`
+    */
+  def iterator: Iterator[A]
+
+  /** @return A `List` containing the elements of this `FingerTree`
+    */
+  def toList: List[A]
+
 
 }
