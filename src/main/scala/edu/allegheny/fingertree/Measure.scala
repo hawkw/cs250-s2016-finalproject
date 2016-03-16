@@ -1,6 +1,7 @@
 package edu.allegheny.fingertree
 
 import org.scalactic.Requirements._
+import algebra.Monoid
 
 /** Trait for a measure on a [[FingerTree]].
   *
@@ -19,7 +20,7 @@ import org.scalactic.Requirements._
   *
   * Created by hawk on 3/14/16.
   */
-trait Measure[V, @specialized(Int, Long, Float, Double) -A] {
+trait Measure[V <: Monoid, @specialized(Int, Long, Float, Double) -A] {
 
   /** Return the identity measure.
     *
