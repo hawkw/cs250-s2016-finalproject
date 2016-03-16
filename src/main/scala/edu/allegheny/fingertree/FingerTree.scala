@@ -13,7 +13,16 @@ package edu.allegheny.fingertree
 sealed trait FingerTree[V, +A] {
 
   protected[this] type Self = FingerTree[V, A]
-
+  /* Note that traditionally, we would get a number of these methods 'for free'
+   * by mixing in a trait like `TraversableLike` or `SeqLike`. However, since
+   * a number of `FingerTree` methods, such as `prepend`, `append`, `init`, and
+   * `tail`, require an implicit `Measure` parameter, we can't just mix in
+   * a standard-library collection trait, as we can no longer override those
+   * methods (since the addition of the implicit `Measure` parameter changes
+   * their signature.
+   *
+   * Ah well.
+   */
   /** Tests whether this `FingerTree` is empty.
     *
     *  @return `true` if the `FingerTree` contains no elements,
