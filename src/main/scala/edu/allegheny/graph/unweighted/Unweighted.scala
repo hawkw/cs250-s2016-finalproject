@@ -25,7 +25,7 @@ extends Graph[V] {
     def connectTo(node: Node)
 
     override def hasEdgeTo(node: Node): Boolean
-    = _edges contains { case (n: Node, _) => n == node }
+    = _edges contains node
   }
 
 
