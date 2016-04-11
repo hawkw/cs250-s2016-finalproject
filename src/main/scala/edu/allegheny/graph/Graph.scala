@@ -8,7 +8,6 @@ import scala.language.postfixOps
   *
   * Created by hawk on 4/11/16.
   */
-  */
 trait Graph[V] {
   /** The type of nodes in this graph */
   type Node <: NodeLike
