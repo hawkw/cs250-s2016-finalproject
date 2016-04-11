@@ -31,7 +31,7 @@ extends Graph[V] {
     def connectTo(node: Node, weight: Weight)
 
     override def hasEdgeTo(node: Node): Boolean
-      = _edges exists { case (n: Node, _: Weight) => n == node }
+      = _edges exists { case (n, _) => n == node }
   }
 
 
