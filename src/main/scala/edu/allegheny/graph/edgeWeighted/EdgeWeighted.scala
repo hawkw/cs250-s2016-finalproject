@@ -19,7 +19,7 @@ import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
   *
   * Created by hawk on 4/11/16.
   */
-abstract class EdgeWeighted[V, @sp(Int, Long, Float, Double) Weight: Num: Ord]
+trait EdgeWeighted[V, @sp(Int, Long, Float, Double) Weight]
 extends Graph[V] {
 
   override type Node <: EWNode
