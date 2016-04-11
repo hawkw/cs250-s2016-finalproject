@@ -22,10 +22,16 @@ extends EdgeWeighted[V, Weight]
   override type Node = DirectedEWNode
   override type Edge = (Node, Weight)
 
+  override def node(item: V): Node = {
+    val n = new Node(item)
+    _nodes = _nodes :+ n
+    n
+  }
+
   class DirectedEWNode(value: V)
   extends EWNode(value) { self: Node =>
 
-    import ev$2.mkOrderingOps
+    import Ord.Implicits._
 
     def connectTo(that: Node, weight: Weight): Unit = {
       require(weight > 0.asInstanceOf[Weight])

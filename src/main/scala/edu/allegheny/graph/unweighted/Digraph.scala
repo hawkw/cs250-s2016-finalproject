@@ -13,6 +13,12 @@ extends Unweighted[V] {
   override type Node = DirectedUWNode
   override type Edge = Node
 
+  override def node(item: V): Node = {
+    val n = new Node(item)
+    _nodes = _nodes :+ n
+    n
+  }
+
   class DirectedUWNode(value: V)
     extends UWNode(value) {
     self: Node =>

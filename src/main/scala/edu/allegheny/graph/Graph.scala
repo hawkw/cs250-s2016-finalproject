@@ -62,11 +62,7 @@ trait Graph[V] {
     *
     * @return a new node.
     */
-  @inline final def node(item: V): Node = {
-    val n = new Node(item)
-    _nodes = _nodes :+ n
-    n
-  }
+  def node(item: V): Node
 
   /** The _order_ of a graph is the number of nodes in the graph
     * @return the number of nodes in this graph

@@ -13,6 +13,12 @@ class Undigraph[V]
   override type Node = UndirectedUWNode
   override type Edge = Node
 
+  override def node(item: V): Node = {
+    val n = new Node(item)
+    _nodes = _nodes :+ n
+    n
+  }
+
   class UndirectedUWNode(value: V)
     extends UWNode(value) { self: Node =>
 
