@@ -1,7 +1,7 @@
 package edu.allegheny.graph
 package edgeWeighted
 
-import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
+import scala.{specialized => sp}
 
 /** A graph that is edge-weighted.
   *
