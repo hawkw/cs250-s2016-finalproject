@@ -45,6 +45,13 @@ trait Graph[V] {
       */
     @inline final def degree: Int
       = _nodes count { _ hasEdgeTo this }
+
+    /** Find the shortest path from this node to the specified node.
+      *
+      * @param to the node to find the shortest path to.
+      * @return   a list of nodes representing the path (in order)
+      */
+    def shortestPathTo(to: Node): List[Node]
   }
 
   protected[this] var _nodes: List[Node] = Nil
@@ -71,4 +78,13 @@ trait Graph[V] {
     * @return the number of edges in this graph
     */
   @inline final def size: Int = _nodes map { _.edges.size } sum
+
+  /** Find the shortest path from one node to another.
+    *
+    * @param to   the starting node
+    * @param from the ending node
+    * @return     a list of nodes representing the path (in order)
+    */
+  @inline final def shortestPath(to: Node, from: Node): List[Node]
+    = from shortestPathTo to
 }

@@ -14,11 +14,19 @@ extends Unweighted[V] {
   override type Edge = Node
 
   class DirectedUWNode(value: V)
-    extends UWNode(value) { self: Node =>
+    extends UWNode(value) {
+    self: Node =>
 
     def connectTo(that: Node): Unit
       = if (!this.hasEdgeTo(that)) this addEdge that
 
+    /** @inheritdoc
+      *
+      * In an unweighted graph, the shortest path is the path that requires
+      * the fewest edges to be traversed.
+      */
+    def shortestPathTo(to: Node): List[Node]
+      = ???
   }
 
 }

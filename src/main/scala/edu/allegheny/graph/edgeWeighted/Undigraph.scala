@@ -36,6 +36,14 @@ extends EdgeWeighted[V, Weight]
       }
     }
 
+    /** @inheritdoc
+      *
+      * In an edge-weighted graph, the shortest path is the path for which
+      * the sum of the weights of the edges traversed is the lowest.
+      */
+    def shortestPathTo(to: Node): List[Node]
+      = ???
+
   }
 
 }
