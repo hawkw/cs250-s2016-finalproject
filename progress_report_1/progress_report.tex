@@ -46,7 +46,11 @@
 
 \newthought{Dijkstra’s algorithm} and other centralized shortest-path algorithms are not ideal for this use case. The first reason for this is security. Dijkstra’s algorithm would require each peer to know every edge in the graph, but this could enable an attacker to make reasonable guesses as to where a particular message is coming from or where it is going. For example, consider the case where a node $A$ is connected to node $B$ and no other nodes. Then it becomes clear that node $A$ is the final destination of any message it receives from $B$, and the originator of any message which it sends to $B$.
 
+Additionally, if a routing algorithm requires that each peer is aware of every other peer, an attacker compromising one peer de-anonymizes the entire network. If, however, the set of peers which each peer must be aware of is restricted,  then the system can often continue to be anonymous even if some of some of its members are compromised. Limiting information shared between peers improves the system's tolerance to attack by ensuring that a single peer cannot compromise the entire network.
+
 Furthermore, Djikstra's algorithm suffers from scalability issues does scale well for this application. In networks with large amounts of peers, each peer would have to devote a large amount of memory to keeping track of the network state, much of which would be irrelevant to the messages it is trying to send or receive.
 
-A distributed implementation could help alleviate these issues so that all nodes are not necessarily aware of the entire network geography. Several distributed shortest-path algorithms have been published, and we are currently exploring these options.
+\newthought{A distributed implementation} could help alleviate these issues so that all nodes are not necessarily aware of the entire network geography. Several distributed shortest-path algorithms have been published, and we are currently exploring these options.
+
+\newthought{We have already completed} much of a general-purpose implementation of multiple graph data structures in Scala. Our implementation provides concrete classes for representing edge-weighted and unweighted directed and undirected graphs. We make use of multiple abstract traits for types of graphs, such as weighted and unweighted, allowing us to maximize code sharing between the various graphs that our system models.
 \end{document}
