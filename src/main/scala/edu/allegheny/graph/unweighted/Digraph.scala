@@ -2,8 +2,7 @@ package edu.allegheny.graph.unweighted
 
 /** An unweighted directed graph.
   *
-  * @tparam V      the type of the value to associate with each node in the
-  *                graph.
+  * @tparam V the type of the value to associate with each node in the graph.
   * @author Hawk Weisman
   *
   * Created by hawk on 4/11/2016

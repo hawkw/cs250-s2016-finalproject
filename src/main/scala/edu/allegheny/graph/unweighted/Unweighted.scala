@@ -4,12 +4,11 @@ package unweighted
 
 /** An unweighted graph.
   *
-  * In an edge-weighted graph, edges are not associated with weights. Finding
+  * In an unweighted graph, edges are not associated with weights. Finding
   * the shortest path in such a graph cares only about the number of edges,
   * not their lengths.
   *
-  * @tparam V      the type of the value to associate with each node in the
-  *                graph.
+  * @tparam V the type of the value to associate with each node in the graph.
   * @author Hawk Weisman
   *
   * Created by hawk on 4/11/16.
