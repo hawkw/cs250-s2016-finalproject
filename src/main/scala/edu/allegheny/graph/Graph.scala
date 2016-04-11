@@ -2,18 +2,40 @@ package edu.allegheny.graph
 
 import scala.language.postfixOps
 
-/**
+/** Base trait defining a Graph.
+  *
+  * //@tparam V the value to store at each node in this graph
+  *
   * Created by hawk on 4/11/16.
   */
-trait Graph {
+  */
+trait Graph[V] {
+  /** The type of nodes in this graph */
   type Node <: NodeLike
+
+  /** The type of edges in this graph.
+    *
+    * In an edge-weighted graph, this will generally be a tuple of the form
+    * `(Node, Weight)`, while in a non-edge-weighted graph, this is just a
+    * `Node`.
+    */
   type Edge
 
-  trait NodeLike { self: Node =>
-    protected[this] var _edges: Seq[Edge] = Nil
+  /** Class representing a node in a graph.
+    *
+    * Each Node stores a set of edges. It may also optionally be associated
+    * with a value.
+    *
+    * @param value the value to store at this node.
+    */
+  abstract class NodeLike(val value: V) { self: Node =>
+    protected[this] var _edges: Set[Edge] = Set()
 
-    @inline final def edges: Seq[Edge] = _edges
-    @inline final def addEdge(e: Edge): Unit =  _edges = _edges :+ e
+    /** @return the set of edges from this node. */
+    @inline final def edges: Set[Edge] = _edges
+
+    /** Add an edge from this node */
+    @inline final def addEdge(e: Edge): Unit =  _edges = _edges + e
 
     def hasEdgeTo(node: Node): Boolean
 
@@ -34,8 +56,8 @@ trait Graph {
     *
     * @return a new node.
     */
-  @inline final def node: Node = {
-    val n = new Node
+  @inline final def node(item: V): Node = {
+    val n = new Node(item)
     _nodes = _nodes :+ n
     n
   }
@@ -48,5 +70,5 @@ trait Graph {
   /** The _size_ of a graph is the number of edges in the graph
     * @return the number of edges in this graph
     */
-  @inline final def size: Int = _nodes map { _.edges.length } sum
+  @inline final def size: Int = _nodes map { _.edges.size } sum
 }

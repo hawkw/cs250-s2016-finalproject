@@ -7,18 +7,26 @@ import scala.{ Ordering => Ord
              , specialized => sp
              }
 
-/**
+/** An edge-weighted directed graph.
+  *
+  * @tparam V      the type of the value to associate with each node in the
+  *                graph.
+  * @tparam Weight the type of the weight value associated with each edge in
+  *                the graph.
+  *
+  * @author Hawk Weisman
+  *
   * Created by hawk on 4/11/16.
   */
-class EdgeWeightedDigraph[@sp(Int, Long, Float, Double) Weight : Num : Ord]
-extends EdgeWeighted[Weight]
+class EdgeWeightedDigraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
+extends EdgeWeighted[V, Weight]
   with Requirements {
 
   override type Node = DirectedEWNode
   override type Edge = (Node, Weight)
 
-  class DirectedEWNode
-    extends EWNode { self: Node =>
+  class DirectedEWNode(value: V)
+  extends EWNode(value) { self: Node =>
 
     import ev$2.mkOrderingOps
 
