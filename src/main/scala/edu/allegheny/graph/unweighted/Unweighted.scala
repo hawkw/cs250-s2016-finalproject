@@ -1,4 +1,5 @@
 package edu.allegheny.graph
+package unweighted
 
 
 /** An unweighted graph.
@@ -9,7 +10,6 @@ package edu.allegheny.graph
   *
   * @tparam V      the type of the value to associate with each node in the
   *                graph.
-  *
   * @author Hawk Weisman
   *
   * Created by hawk on 4/11/16.

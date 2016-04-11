@@ -1,11 +1,8 @@
-package edu.allegheny.graph
+package edu.allegheny.graph.edgeWeighted
 
 import org.scalactic.Requirements
 
-import scala.{ Ordering => Ord
-             , Numeric => Num
-             , specialized => sp
-             }
+import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
 
 /** An edge-weighted directed graph.
   *
@@ -18,7 +15,7 @@ import scala.{ Ordering => Ord
   *
   * Created by hawk on 4/11/16.
   */
-class EdgeWeightedDigraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
+class Digraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
 extends EdgeWeighted[V, Weight]
   with Requirements {
 

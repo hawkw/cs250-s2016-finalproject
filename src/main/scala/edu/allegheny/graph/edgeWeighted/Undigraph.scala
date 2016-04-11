@@ -1,10 +1,8 @@
-package edu.allegheny.graph
+package edu.allegheny.graph.edgeWeighted
 
-import scala.{ Ordering => Ord
-             , Numeric => Num
-             , specialized => sp
-             }
 import org.scalactic.Requirements
+
+import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
 
 
 /** An edge-weighted undirected graph.
@@ -18,7 +16,7 @@ import org.scalactic.Requirements
   *
   * Created by hawk on 4/11/16.
   */
-class EdgeWeightedGraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
+class Undigraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
 extends EdgeWeighted[V, Weight]
   with Requirements {
 
