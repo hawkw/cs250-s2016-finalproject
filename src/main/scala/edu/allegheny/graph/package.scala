@@ -18,6 +18,4 @@ package edu.allegheny
   *
   * Created by hawk on 4/11/16.
   */
-package object graph {
-
-}
+package object graph
