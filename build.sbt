@@ -2,7 +2,7 @@ resolvers += "Sonatype OSS Snapshots" at
   "https://oss.sonatype.org/content/repositories/snapshots"
 resolvers += Resolver.sonatypeRepo("releases")
 
-name := "fingertree"
+name := "onion-shortest-path"
 organization := "edu.allegheny"
 version := "0.0.1"
 scalaVersion := "2.12.0-M3"
