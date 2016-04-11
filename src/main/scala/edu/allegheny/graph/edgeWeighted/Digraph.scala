@@ -4,6 +4,8 @@ import org.scalactic.Requirements
 
 import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
 
+import Ord.Implicits._
+
 /** An edge-weighted directed graph.
   *
   * @tparam V      the type of the value to associate with each node in the
@@ -30,8 +32,6 @@ extends EdgeWeighted[V, Weight]
 
   class DirectedEWNode(value: V)
   extends EWNode(value) { self: Node =>
-
-    import Ord.Implicits._
 
     def connectTo(that: Node, weight: Weight): Unit = {
       require(weight > 0.asInstanceOf[Weight])
