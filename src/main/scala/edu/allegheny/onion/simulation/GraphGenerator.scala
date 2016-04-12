@@ -1,11 +1,10 @@
 package edu.allegheny.onion.simulation
-import edu.allegheny.graph.edgeWeighted.Undigraph
 import scala.io.Source
 
 object GraphGenerator {
 
-	def parseFile(path: String): Undigraph[Peer, Double] = {
-		val graph = new Undigraph[Peer, Double]()
+	def parseFile(path: String): Network = {
+		val graph = new Network()
 
 		val f = Source.fromFile(new java.io.File(path))
 
