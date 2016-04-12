@@ -1,14 +1,10 @@
-\documentclass[a4paper,nobib]{tufte-handout}
-
+\documentclass[nobib]{tufte-handout}
 
 \usepackage{url}
 \usepackage{setspace}
 
 \usepackage[english]{babel}
 \usepackage{csquotes}
-
-\usepackage{hyperref}
-\usepackage{cleveref}
 
 \usepackage{graphicx} % allow embedded images
   \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
@@ -18,10 +14,22 @@
 \usepackage{units}    % non-stacked fractions and better unit spacing
 \usepackage{multicol} % multiple column layout facilities
 \usepackage{minted}
-\usepackage{fancyvrb}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
 \usepackage{placeins}
+\usepackage[ style=verbose-ibid
+           , autocite=footnote
+           , backend=biber
+           , natbib=true
+           ]{biblatex}
+\AtEveryCitekey{%
+  \clearfield{url}%
+  \clearfield{urlyear}
+  \clearfield{doi}%
+  \clearfield{issn}%
+  \clearfield{pages}%
+  \clearfield{numpages}%
+  \clearfield{publisher}%
+ }
+\renewbibmacro*{in:}{}
 
 \setminted{ style=trac
           %, fontfamily = fvm
@@ -33,15 +41,19 @@
           , linenos = true
           , numberblanklines = true
           }
+
+\addbibresource{bibliography.bib}
 \title{CMPSC250 Final Project Progress Report I}
 \author{Aubrey Collins and Hawk Weisman}
 \begin{document}
 
 \maketitle
 
-\newthought{We have decided to switch} the subject of our project from finger trees to onion routing. Onion routing is a process by which intermediary nodes in a network do not know the original source, final destination, or contents of the messages they are relaying, allowing for anonymous communication. This works by encapsulating each message in an ``onion'', a data structure characterized by multiple layers of encryption. Each routing node between source and destination decrypts a layer, revealing information about where to send the onion next. It pads the onion back to its original size, so that future nodes cannot estimate how many times the onion has already been forwarded. It then sends the onion to the next node in the path, and the process continues until the message arrives at the destination.
+\newthought{Due to difficulties} with our original project topic, we have chosen to change direction to one which is better suited to our experience and background knowledge. Rather than continuing to work on our finger tree implementation, we now intend to work on an implementation of destributed graph algorithms for finding efficient paths in an onion-routed network.
 
-\newthought{In onion routing software} such as TOR, a client typically picks a random path to the destination rather than the shortest path. This feature is intended to increase the security of the network. However, this makes onion routing unusable for applications which require low latency, such as voice chatting. We will simulate an onion-routed network in Scala, with the added goal of reducing latency. To this end, we will use a distributed algorithm to minimize the number of times an onion must be forwarded before arriving at its destination, while still maintaining anonyminity. We will then analyze our network to evaluate the tradeoff between security and latency, along with typical computational complexity analysis.
+\newthought{Onion routing} is a process by which intermediary nodes in a network do not know the original source, final destination, or contents of the messages they are relaying, allowing for anonymous communication. This works by encapsulating each message in an ``onion'', a data structure characterized by multiple layers of encryption.\autocite{goldschlag1999CACM,goldschlag2006JSAC} Each routing node between source and destination decrypts a layer, revealing information about where to send the onion next. It pads the onion back to its original size, so that future nodes cannot estimate how many times the onion has already been forwarded. It then sends the onion to the next node in the path, and the process continues until the message arrives at the destination.\autocite{goldschlag1999CACM,goldschlag2006JSAC}
+
+In onion routing software such as TOR, a client typically picks a random path to the destination rather than the shortest path. This feature is intended to increase the security of the network.\autocite{goldschlag1999CACM,goldschlag2006JSAC} However, this makes onion routing unusable for applications which require low latency, such as voice chatting. We will simulate an onion-routed network in Scala, with the added goal of reducing latency. To this end, we will use a distributed algorithm to minimize the number of times an onion must be forwarded before arriving at its destination, while still maintaining anonyminity. We will then analyze our network to evaluate the tradeoff between security and latency, along with typical computational complexity analysis.
 
 
 \newthought{Dijkstra's algorithm} and other centralized shortest-path algorithms are not ideal for this use case. The first reason for this is security. Dijkstra's algorithm would require each peer to know every edge in the graph, but this could enable an attacker to make reasonable guesses as to where a particular message is coming from or where it is going. For example, consider the case where a node $A$ is connected to node $B$ and no other nodes. Then it becomes clear that node $A$ is the final destination of any message it receives from $B$, and the originator of any message which it sends to $B$.
@@ -50,7 +62,15 @@ Additionally, if a routing algorithm requires that each peer is aware of every o
 
 Furthermore, Djikstra's algorithm suffers from scalability issues does scale well for this application. In networks with large amounts of peers, each peer would have to devote a large amount of memory to keeping track of the network state, much of which would be irrelevant to the messages it is trying to send or receive.
 
-A distributed implementation could help alleviate these issues so that all nodes are not necessarily aware of the entire network geography. Several distributed shortest-path algorithms have been published, and we are currently exploring these options.
+A distributed implementation could help alleviate these issues so that all nodes are not necessarily aware of the entire network geography. Several distributed shortest-path algorithms have been published, and we are currently exploring these options.\autocite{zaumen1991SIGCOMM,humblet1988adaptive,humblet1991another,Gallager:1983:DAM:357195.357200} While in some cases, it may not be possible to find an optimal solution (\textit{viz.} a short\textit{est} path) without complete knowledge of the network, it is still possible for a greedy algorithm which finds only local optimums to produce an optimized solution (\textit{viz.} a short\textit{er} path). Even if a given routing solution cannot conclusively be shown to be the shortest possible path, producing an optimized solution rather than a randomly chosen one can still have measurable\footnote{And more importantly, \textit{noticeable}.} effects on network latency.
 
-\newthought{We have already completed} much of a general-purpose implementation of multiple graph data structures in Scala. Our implementation provides concrete classes for representing edge-weighted and unweighted directed and undirected graphs. We make use of multiple abstract traits for types of graphs, such as weighted and unweighted, allowing us to maximize code sharing between the various graphs that our system models.
+\newthought{We have already completed} much of a general-purpose implementation of multiple graph data structures in Scala. Our implementation provides concrete classes for representing edge-weighted and unweighted directed and undirected graphs, with the hopes that this graph structure may also be useable in future work. We make use of multiple abstract traits for types of graphs, such as weighted and unweighted, allowing us to maximize code sharing between the various graphs that our system models.
+Additional necessary work will involve extending and testing our graph data structures, implementing our routing algorithm, and using our graph implementation to construct a simulation demonstrating the use of our routing techniques. We will then conduct experimental analysis of our solution using this simulation.
+
+% \bibliography{bibliography}
+% \bibliographystyle{plainnat}
+% \begin{fullwidth}
+\printbibliography
+% \end{fullwidth}
+
 \end{document}
