@@ -1,5 +1,4 @@
-Finger Trees in Scala [![Build Status](https://travis-ci.org/hawkw/cs250-s2016-finalproject.svg?branch=master)](https://travis-ci.org/hawkw/cs250-s2016-finalproject) [![Codacy Badge](https://api.codacy.com/project/badge/grade/a7e9e2b8213c43f7afd419e1750f90f1)](https://www.codacy.com/app/hawk/cs250-s2016-finalproject)
-[![Sputnik](https://sputnik.ci/conf/badge)](https://sputnik.ci/app#/builds/hawkw/cs250-s2016-finalproject)
+Optimised Onion Routing [![Build Status](https://travis-ci.org/hawkw/cs250-s2016-finalproject.svg?branch=master?style=flat-square)](https://travis-ci.org/hawkw/cs250-s2016-finalproject) [![Codacy](https://img.shields.io/codacy/e27821fb6289410b8f58338c7e0bc686.svg?maxAge=2592000?style=flat-square)]() [![Sputnik](https://sputnik.ci/conf/badge)](https://sputnik.ci/app#/builds/hawkw/cs250-s2016-finalproject)
 =====================
 
 Aubrey Collins & Hawk Weisman, CMPSC250 Spring 2016 Final Project 
