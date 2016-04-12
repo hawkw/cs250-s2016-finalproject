@@ -18,3 +18,5 @@ script:
   - sbt ++$TRAVIS_SCALA_VERSION test
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+after_success:
+ - python <(curl -s https://raw.githubusercontent.com/TouK/sputnik-ci/master/sputnik-ci.py)
