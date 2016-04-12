@@ -8,7 +8,7 @@ package edu.allegheny.graph.unweighted
   * Created by hawk on 4/11/2016
   */
 class Undigraph[V]
-  extends Unweighted[V] {
+extends Unweighted[V] {
 
   override type Node = UndirectedUWNode
   override type Edge = Node
@@ -20,7 +20,7 @@ class Undigraph[V]
   }
 
   class UndirectedUWNode(value: V)
-    extends UWNode(value) { self: Node =>
+  extends UWNode(value) { self: Node =>
 
     def connectTo(that: Node): Unit
       = if (!this.hasEdgeTo(that)) {

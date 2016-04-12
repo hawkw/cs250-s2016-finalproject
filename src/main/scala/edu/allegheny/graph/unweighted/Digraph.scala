@@ -20,8 +20,7 @@ extends Unweighted[V] {
   }
 
   class DirectedUWNode(value: V)
-    extends UWNode(value) {
-    self: Node =>
+  extends UWNode(value) { self: Node =>
 
     def connectTo(that: Node): Unit
       = if (!this.hasEdgeTo(that)) this addEdge that

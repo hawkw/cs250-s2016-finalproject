@@ -28,13 +28,13 @@ extends Graph[V] {
   abstract class EWNode(value: V)
   extends NodeLike(value) { self: Node =>
 
- /** Connect this node to another node with an edge with the given weight.
-   *
-   * The weight must be greater than zero.
-   *
-   * @param  node   the node to connect this node to
-   * @param  weight the weight of the created edge
-   */
+   /** Connect this node to another node with an edge with the given weight.
+     *
+     * The weight must be greater than zero.
+     *
+     * @param  node   the node to connect this node to
+     * @param  weight the weight of the created edge
+     */
     @throws[IllegalArgumentException]("if the weight is <= 0")
     def connectTo(node: Node, weight: Weight): Unit
 
