@@ -4,20 +4,20 @@ import scala.io.Source
 
 object GraphGenerator {
 
-	def parseFile(path: String): Undigraph[Peer, Double] {
-		val graph = new Undigraph()
+	def parseFile(path: String): Undigraph[Peer, Double] = {
+		val graph = new Undigraph[Peer, Double]()
 
 		val f = Source.fromFile(new java.io.File(path))
 
 		// read file as a sequence of strings
-		val lines: Seq[String] = for (ln <- f.getLines) yield ln
+		val lines: Seq[String] = f.getLines.toIndexedSeq
 		// the first line in the input file is the number of nodes
 		val numNodes = lines(0).toInt
 		// create an array to store the new nodes and fill it with empty nodes
-		val nodes: Array[graph.Node] 
-			= for (_ <- 0...numNodes) yield graph.node(new Peer())
+		val nodes: Seq[graph.Node]
+			= for (_ <- 0 until numNodes) yield graph.node(new Peer())
 		//parse rest of file and make connections
-		for (ln <- lines.drop(2)) {
+		for (ln <- lines.drop(2) ) {
 			val Array(to, from, weight) = ln.split(' ')
 			nodes(to.toInt).connectTo(nodes(from.toInt), weight.toDouble)
 		}
