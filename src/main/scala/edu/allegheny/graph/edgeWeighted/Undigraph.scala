@@ -33,6 +33,7 @@ extends EdgeWeighted[V, Weight]
   class UndirectedEWNode(value: V)
   extends EWNode(value) { self: Node =>
 
+    @throws[IllegalArgumentException]("if the weight is <= 0")
     def connectTo(that: Node, weight: Weight): Unit = {
       require(weight > 0.asInstanceOf[Weight])
       if (!this.hasEdgeTo(that)) {
