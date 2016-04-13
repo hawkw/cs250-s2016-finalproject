@@ -73,12 +73,18 @@ extends Traversable[Graph#Node] {
   /** The _order_ of a graph is the number of nodes in the graph
     * @return the number of nodes in this graph
     */
-  @inline final def order: Int = _nodes length
+  @inline final def graphOrder: Int = _nodes length
 
   /** The _size_ of a graph is the number of edges in the graph
+    *
+    * Note that this is the graph-theoretic definition of 'size', not the
+    * Scala collections definition of size. The `Graph.size()` function
+    * (inherited from `Traversable`) is simply the number of items in the
+    * graph, as defined by Scala collections.
+    *
     * @return the number of edges in this graph
     */
-  @inline final def size: Int = _nodes map { _.edges.size } sum
+  @inline final def graphSize: Int = _nodes map { _.edges.size } sum
 
   /** Find the shortest path from one [[Node]] to another.
     *
@@ -89,6 +95,10 @@ extends Traversable[Graph#Node] {
   @inline final def shortestPath(to: Node, from: Node): Seq[Node]
     = from shortestPathTo to
 
+  /** Apply a function to each [[Node]] in this graph.
+    * @param f
+    * @tparam U
+    */
   @inline def foreach[U](f: Node => U): Unit
     = _nodes foreach f
 }
