@@ -83,7 +83,7 @@ trait Graph[V] {
     *
     * @return the number of edges in this graph
     */
-  @inline final def graphSize: Int = _nodes map { _.edges.size } sum
+  @inline def graphSize: Int = _nodes map { _.edges.size } sum
 
   /** Find the shortest path from one [[Node]] to another.
     *

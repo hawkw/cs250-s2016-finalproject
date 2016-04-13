@@ -30,7 +30,7 @@ extends Unweighted[V]
         }
 
     /** @inheritdoc
-      *
+      *i
       * In an unweighted graph, the shortest path is the path that requires
       * the fewest edges to be traversed.
       */
@@ -45,7 +45,14 @@ extends Unweighted[V]
     * @tparam U
     */
   @inline final def foreach[U](f: (Unweighted[V]#Node) => U): Unit
-  = _nodes foreach f
+    = _nodes foreach f
+
+  /** @inheritdoc
+    *
+    * This is special-cased for undirected graphs, since they cannot calculate
+    * the number of edges in the same way as directed graphs.
+    */
+  @inline override def graphSize: Int = super.graphSize / 2
 
 
 }

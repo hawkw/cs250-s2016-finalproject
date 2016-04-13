@@ -12,7 +12,6 @@ import Ord.Implicits._
   *                graph.
   * @tparam Weight the type of the weight value associated with each edge in
   *                the graph.
-  *
   * @author Hawk Weisman
   *
   * Created by hawk on 4/11/16.
@@ -38,8 +37,8 @@ extends EdgeWeighted[V, Weight]
     def connectTo(that: Node, weight: Weight): Unit = {
       require(weight > implicitly[Numeric[Weight]].zero)
       if (!this.hasEdgeTo(that)) {
-        this addEdge (that, weight)
-        that addEdge (this, weight)
+        this addEdge(that, weight)
+        that addEdge(this, weight)
       }
     }
 
@@ -54,10 +53,18 @@ extends EdgeWeighted[V, Weight]
   }
 
   /** Apply a function to each [[Node]] in this graph.
+    *
     * @param f
     * @tparam U
     */
   @inline final def foreach[U](f: (EdgeWeighted[V, Weight]#Node) => U): Unit
     = _nodes foreach f
+
+  /** @inheritdoc
+    *
+    * This is special-cased for undirected graphs, since they cannot calculate
+    * the number of edges in the same way as directed graphs.
+    */
+  @inline override def graphSize: Int = super.graphSize / 2
 
 }
