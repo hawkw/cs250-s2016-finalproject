@@ -1,6 +1,10 @@
 package edu.allegheny.onion.simulation
 import scala.io.Source
 
+/** Generates graphs from the Algs4 data file format
+  *
+  * @author Aubrey Collins
+  */
 object GraphGenerator {
 
 	def parseFile(path: String): Network = {
