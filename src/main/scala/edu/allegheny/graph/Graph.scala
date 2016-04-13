@@ -8,7 +8,9 @@ import scala.language.postfixOps
   *
   * Created by hawk on 4/11/16.
   */
-trait Graph[V] {
+trait Graph[V]
+extends Traversable[Graph#Node] {
+
   /** The type of nodes in this graph */
   type Node <: NodeLike
 
@@ -86,4 +88,7 @@ trait Graph[V] {
     */
   @inline final def shortestPath(to: Node, from: Node): Seq[Node]
     = from shortestPathTo to
+
+  @inline def foreach[U](f: Node => U): Unit
+    = _nodes foreach f
 }
