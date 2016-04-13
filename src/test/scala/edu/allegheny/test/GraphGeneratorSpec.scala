@@ -12,6 +12,7 @@ import scala.io.Source
 class GraphGeneratorSpec
 extends WordSpec
   with Matchers
+  // with NodeMatchers
   with OptionValues {
 
   "The GraphGenerator" when {
