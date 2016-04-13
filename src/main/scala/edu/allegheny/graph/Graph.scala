@@ -47,7 +47,7 @@ trait Graph[V] {
 
     /** Find the shortest path from this node to the specified node.
       *
-      * @param to the node to find the shortest path to.
+      * @param to the [[Node]] to find the shortest path to.
       * @return   a list of nodes representing the path (in order)
       */
     def shortestPathTo(to: Node): Seq[Node]
@@ -55,12 +55,16 @@ trait Graph[V] {
 
   protected[this] var _nodes: Seq[Node] = Nil
 
-  /** Construct and return a new node.
+  /** @return A sequence of all the [[Node]]s in this graph
+    */
+  @inline final def nodes: Seq[Node] = _nodes
+
+  /** Construct and return a new [[Node]].
     *
     * The new node will be in the graph but will not be connected to any other
     * nodes.
     *
-    * @return a new node.
+    * @return a new [[Node]].
     */
   def node(item: V): Node
 
@@ -74,11 +78,11 @@ trait Graph[V] {
     */
   @inline final def size: Int = _nodes map { _.edges.size } sum
 
-  /** Find the shortest path from one node to another.
+  /** Find the shortest path from one [[Node]] to another.
     *
-    * @param to   the starting node
-    * @param from the ending node
-    * @return     a list of nodes representing the path (in order)
+    * @param to   the starting [[Node]]
+    * @param from the ending [[Node]]
+    * @return     a sequence of nodes representing the path (in order)
     */
   @inline final def shortestPath(to: Node, from: Node): Seq[Node]
     = from shortestPathTo to
