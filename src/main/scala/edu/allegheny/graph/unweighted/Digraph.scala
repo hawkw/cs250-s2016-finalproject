@@ -1,5 +1,6 @@
 package edu.allegheny.graph.unweighted
 
+
 /** An unweighted directed graph.
   *
   * @tparam V the type of the value to associate with each node in the graph.
@@ -8,7 +9,8 @@ package edu.allegheny.graph.unweighted
   * Created by hawk on 4/11/2016
   */
 class Digraph[V]
-extends Unweighted[V] {
+extends Unweighted[V]
+  with Traversable[Unweighted[V]#Node] {
 
   override type Node = DirectedUWNode
   override type Edge = Node
@@ -33,5 +35,13 @@ extends Unweighted[V] {
     def shortestPathTo(to: Node): Seq[Node]
       = ???
   }
+
+  /** Apply a function to each [[Node]] in this graph.
+    *
+    * @param f
+    * @tparam U
+    */
+  @inline final def foreach[U](f: (Unweighted[V]#Node) => U): Unit
+    = _nodes foreach f
 
 }

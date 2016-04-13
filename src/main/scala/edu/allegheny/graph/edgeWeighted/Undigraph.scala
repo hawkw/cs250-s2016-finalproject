@@ -19,6 +19,7 @@ import Ord.Implicits._
   */
 class Undigraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
 extends EdgeWeighted[V, Weight]
+  with Traversable[EdgeWeighted[V, Weight]#Node]
   with Requirements {
 
   override type Node = UndirectedEWNode
@@ -51,5 +52,12 @@ extends EdgeWeighted[V, Weight]
       = ???
 
   }
+
+  /** Apply a function to each [[Node]] in this graph.
+    * @param f
+    * @tparam U
+    */
+  @inline final def foreach[U](f: (EdgeWeighted[V, Weight]#Node) => U): Unit
+    = _nodes foreach f
 
 }

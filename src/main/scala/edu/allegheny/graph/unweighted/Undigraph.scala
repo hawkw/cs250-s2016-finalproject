@@ -8,7 +8,8 @@ package edu.allegheny.graph.unweighted
   * Created by hawk on 4/11/2016
   */
 class Undigraph[V]
-extends Unweighted[V] {
+extends Unweighted[V]
+  with Traversable[Unweighted[V]#Node] {
 
   override type Node = UndirectedUWNode
   override type Edge = Node
@@ -37,5 +38,14 @@ extends Unweighted[V] {
       = ???
 
   }
+
+  /** Apply a function to each [[Node]] in this graph.
+    *
+    * @param f
+    * @tparam U
+    */
+  @inline final def foreach[U](f: (Unweighted[V]#Node) => U): Unit
+  = _nodes foreach f
+
 
 }

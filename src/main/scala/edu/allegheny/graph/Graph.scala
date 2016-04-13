@@ -8,8 +8,7 @@ import scala.language.postfixOps
   *
   * Created by hawk on 4/11/16.
   */
-trait Graph[V]
-extends Traversable[Graph#Node] {
+trait Graph[V] {
 
   /** The type of nodes in this graph */
   type Node <: NodeLike
@@ -95,12 +94,6 @@ extends Traversable[Graph#Node] {
   @inline final def shortestPath(to: Node, from: Node): Seq[Node]
     = from shortestPathTo to
 
-  /** Apply a function to each [[Node]] in this graph.
-    * @param f
-    * @tparam U
-    */
-  @inline final def foreach[U](f: Node => U): Unit
-    = _nodes foreach f
 
   /** Search the graph for a [[Node]] corresponding to a given value.
     * @param value the value to find a node for.
@@ -108,4 +101,11 @@ extends Traversable[Graph#Node] {
     */
   @inline final def nodeFor(value: V): Option[Node]
     = _nodes find { _.value == value}
+
+//  /** Apply a function to each [[Node]] in this graph.
+//    * @param f
+//    * @tparam U
+//    */
+//  @inline final def foreach[U](f: Node => U): Unit
+//  = _nodes foreach f
 }

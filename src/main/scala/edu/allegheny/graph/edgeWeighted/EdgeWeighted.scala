@@ -42,5 +42,4 @@ extends Graph[V] {
       = _edges exists { case (n, _) => n == node }
   }
 
-
 }
