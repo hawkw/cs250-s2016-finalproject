@@ -39,7 +39,16 @@ extends Graph[V] {
     def connectTo(node: Node, weight: Weight): Unit
 
     override def hasEdgeTo(node: Node): Boolean
-      = _edges exists { case (n, _) => n == node }
+     = _edges exists { case (n, _) => n == node }
+
+    /** Returns the [[Weight]] of the edge to the given [[Node]], if one exists.
+      *
+      * @param node the [[Node]] to find the weight of the edge to
+      * @return     `Some(Weight)` if this node has an edge to the given node,
+      *             `None` otherwise.
+      */
+    def weightTo(node: Node): Option[Weight]
+     = _edges find { case (n, _) => n == node } map { case (_, w) => w }
   }
 
 }
