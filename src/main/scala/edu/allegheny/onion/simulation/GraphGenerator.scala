@@ -7,13 +7,13 @@ import scala.io.Source
   */
 object GraphGenerator {
 
-	def parseFile(path: String): Network = {
+	def parseFile(source: io.Source): Network = {
 		val graph = new Network()
 
-		val f = Source.fromFile(new java.io.File(path))
+		// val f = Source.fromFile(new java.io.File(path))
 
 		// read file as a sequence of strings
-		val lines: Seq[String] = f.getLines.toIndexedSeq
+		val lines: Seq[String] = source.getLines.toIndexedSeq
 		// the first line in the input file is the number of nodes
 		val numNodes = lines.head.toInt
 		// create an array to store the new nodes and fill it with empty nodes
