@@ -19,14 +19,15 @@ extends WordSpec
       def tinyEWD = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
 
       "produce a network with the correct number of nodes" in {
-        val network: Graph[Peer] = GraphGenerator parse tinyEWD
+        val network = GraphGenerator parse tinyEWD
 
         network should have ('graphOrder (8))
       }
       "produce a network with the correct number of edges" in {
         val network: Graph[Peer] = GraphGenerator parse tinyEWD
-
-        network should have ('graphSize (15))
+        // Note that the expected number of edges is two fewer than in the file
+        // since the file expects the graph to be directed
+        network should have ('graphSize (13))
       }
     }
   }
