@@ -11,7 +11,7 @@ object GraphGenerator {
 		// read file as a sequence of strings
 		val lines: Seq[String] = f.getLines.toIndexedSeq
 		// the first line in the input file is the number of nodes
-		val numNodes = lines(0).toInt
+		val numNodes = lines.head.toInt
 		// create an array to store the new nodes and fill it with empty nodes
 		val nodes: Seq[graph.Node]
 			= for (_ <- 0 until numNodes) yield graph.node(new Peer())
