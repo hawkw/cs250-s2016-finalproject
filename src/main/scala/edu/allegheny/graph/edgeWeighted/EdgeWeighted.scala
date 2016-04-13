@@ -38,6 +38,14 @@ extends Graph[V] {
     @throws[IllegalArgumentException]("if the weight is <= 0")
     def connectTo(node: Node, weight: Weight): Unit
 
+   /** Operator for creating an edge from this node to another.
+     * @param  that   the node to form an edge to
+     * @param  weight the weight of the new edge
+     */
+    @throws[IllegalArgumentException]("if the weight is <= 0")
+    @inline final def ~> (that: Node, weight: Weight): Unit
+      = this connectTo (that, weight)
+
     override def hasEdgeTo(node: Node): Boolean
      = _edges exists { case (n, _) => n == node }
 

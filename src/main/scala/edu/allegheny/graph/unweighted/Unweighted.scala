@@ -24,6 +24,12 @@ extends Graph[V] {
 
     def connectTo(node: Node)
 
+    /** Operator for creating an edge from this node to another.
+      * @param  that   the node to form an edge to
+      */
+     @inline final def ~> (that: Node): Unit
+       = this connectTo that
+
     override def hasEdgeTo(node: Node): Boolean
       = _edges contains node
   }

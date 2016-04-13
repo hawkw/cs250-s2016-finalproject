@@ -34,6 +34,26 @@ extends Unweighted[V]
       */
     def shortestPathTo(to: Node): Seq[Node]
       = ???
+
+      /** Operator for creating an edge from another node to this node.
+        *
+        * Note that this node is only necessary on directed graphs.
+        *
+        * @param  that   the node to form an edge to this node.
+        */
+    @inline final def <~ (that: Node): Unit = that ~> this
+
+    /** Operator for creating a bi-directional edge between this node
+      * and another.
+      *
+      * Note that this node is only necessary on directed graphs.
+      *
+      * @param  that   the node to form a bi-directional edge with
+      */
+    @inline final def <~> (that: Node): Unit = {
+        this ~> that
+        this <~ that
+    }
   }
 
   /** Apply a function to each [[Node]] in this graph.

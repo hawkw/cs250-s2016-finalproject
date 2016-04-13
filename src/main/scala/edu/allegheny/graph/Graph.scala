@@ -37,6 +37,24 @@ trait Graph[V] {
     /** Add an edge from this node */
     @inline final def addEdge(e: Edge): Unit =  _edges = _edges + e
 
+    /**
+     * Operator for checking if this node has an edge to another node.
+     *
+     * @param  that the node to check if this node has an edge to
+     * @return true if this node has an edge to that node, false otherwise
+     */
+    @inline final def ~>? (that: Node): Boolean = this hasEdgeTo that
+    /**
+     * Operator for checking if another node has an edge to this
+     *
+     * Note that for undirected graphs, `<~?` is functionally equivalent to
+     * `~>?`, while for directed graphs, it is not.
+     *
+     * @param  that the node to check for an edge to this node
+     * @return true if that node has an edge to this node, false otherwise
+     */
+    @inline final def <~? (that: Node): Boolean = that hasEdgeTo this
+
     def hasEdgeTo(node: Node): Boolean
 
     /** The _degree_ (or _valency_) of a node is the number of edges connecting
