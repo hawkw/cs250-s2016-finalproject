@@ -50,10 +50,10 @@ trait Graph[V] {
       * @param to the node to find the shortest path to.
       * @return   a list of nodes representing the path (in order)
       */
-    def shortestPathTo(to: Node): List[Node]
+    def shortestPathTo(to: Node): Seq[Node]
   }
 
-  protected[this] var _nodes: List[Node] = Nil
+  protected[this] var _nodes: Seq[Node] = Nil
 
   /** Construct and return a new node.
     *
@@ -80,6 +80,6 @@ trait Graph[V] {
     * @param from the ending node
     * @return     a list of nodes representing the path (in order)
     */
-  @inline final def shortestPath(to: Node, from: Node): List[Node]
+  @inline final def shortestPath(to: Node, from: Node): Seq[Node]
     = from shortestPathTo to
 }

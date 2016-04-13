@@ -33,7 +33,7 @@ extends Unweighted[V] {
       * In an unweighted graph, the shortest path is the path that requires
       * the fewest edges to be traversed.
       */
-    def shortestPathTo(to: Node): List[Node]
+    def shortestPathTo(to: Node): Seq[Node]
       = ???
 
   }
