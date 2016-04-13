@@ -4,6 +4,6 @@ package edu.allegheny.onion.simulation
   *
   * Created by hawk on 4/12/16.
   */
-class Peer(val id: Int) {
+class Peer {
 
 }
