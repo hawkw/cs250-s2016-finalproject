@@ -36,7 +36,7 @@ extends EdgeWeighted[V, Weight]
 
     @throws[IllegalArgumentException]("if the weight is <= 0")
     def connectTo(that: Node, weight: Weight): Unit = {
-      require(weight > 0.asInstanceOf[Weight])
+      require(weight > implicitly[Numeric[Weight]].zero)
       if (!this.hasEdgeTo(that)) this addEdge (that, weight)
     }
 
