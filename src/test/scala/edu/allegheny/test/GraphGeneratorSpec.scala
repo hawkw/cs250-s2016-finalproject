@@ -16,7 +16,8 @@ extends WordSpec
 
   "The GraphGenerator" when {
     "parsing tinyEWD.txt" should {
-      val tinyEWD = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
+      def tinyEWD = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
+
       "produce a network with the correct number of nodes" in {
         val network: Graph[Peer] = GraphGenerator parse tinyEWD
 
