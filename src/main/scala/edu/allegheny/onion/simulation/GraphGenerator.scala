@@ -7,7 +7,7 @@ import scala.io.Source
   */
 object GraphGenerator {
 
-	def parseFile(source: io.Source): Network = {
+	def parse(source: io.Source): Network = {
 		val graph = new Network()
 
 		// val f = Source.fromFile(new java.io.File(path))
