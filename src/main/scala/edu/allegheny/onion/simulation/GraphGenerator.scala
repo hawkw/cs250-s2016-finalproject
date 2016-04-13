@@ -18,7 +18,7 @@ object GraphGenerator {
 		val numNodes = lines.head.toInt
 		// create an array to store the new nodes and fill it with empty nodes
 		val nodes: Seq[graph.Node]
-			= for (_ <- 0 until numNodes) yield graph.node(new Peer())
+			= for (i <- 0 until numNodes) yield graph.node(new Peer(i))
 		//parse rest of file and make connections
 		for (ln <- lines.drop(2) ) {
 			val Array(to, from, weight) = ln.split(' ')
