@@ -99,6 +99,13 @@ extends Traversable[Graph#Node] {
     * @param f
     * @tparam U
     */
-  @inline def foreach[U](f: Node => U): Unit
+  @inline final def foreach[U](f: Node => U): Unit
     = _nodes foreach f
+
+  /** Search the graph for a [[Node]] corresponding to a given value.
+    * @param value the value to find a node for.
+    * @return      `Some(Node)` if a matching node was found, `None` otherwise
+    */
+  @inline final def nodeFor(value: V): Option[Node]
+    = _nodes find { _.value == value}
 }
