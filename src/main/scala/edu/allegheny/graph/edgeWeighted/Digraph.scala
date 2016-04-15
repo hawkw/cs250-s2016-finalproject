@@ -1,10 +1,11 @@
 package edu.allegheny.graph.edgeWeighted
 
+import edu.allegheny.graph.Directed
 import org.scalactic.Requirements
 
-import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
+import scala.{specialized => sp}
 
-import Ord.Implicits._
+
 
 /** An edge-weighted directed graph.
   *
@@ -17,8 +18,9 @@ import Ord.Implicits._
   *
   * Created by hawk on 4/11/16.
   */
-class Digraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
+class Digraph[V, @sp(Int, Long, Float, Double) Weight : Numeric : Ordering]
 extends EdgeWeighted[V, Weight]
+  with Directed[V]
   with Traversable[EdgeWeighted[V, Weight]#Node]
   with Requirements {
 
@@ -32,37 +34,8 @@ extends EdgeWeighted[V, Weight]
   }
 
   class DirectedEWNode(value: V)
-  extends EWNode(value) { self: Node =>
-
-    @throws[IllegalArgumentException]("if the weight is <= 0")
-    final def connectTo(that: Node, weight: Weight): Unit = {
-      require(weight > implicitly[Numeric[Weight]].zero)
-      if (!this.hasEdgeTo(that)) this addEdge (that, weight)
-    }
-
-    /** Operator for creating an edge from another node to this node.
-      *
-      * Note that this node is only necessary on directed graphs.
-      *
-      * @param  that   the node to form an edge to this node.
-      * @param  weight the weight of the new edge
-      */
-    @throws[IllegalArgumentException]("if the weight is <= 0")
-    @inline final def <~ (that: Node, weight: Weight): Unit
-      = that ~> (this, weight)
-
-  /** Operator for creating a bi-directional edge between this node and another.
-    *
-    * Note that this node is only necessary on directed graphs.
-    *
-    * @param  that   the node to form a bi-directional edge with
-    * @param  weight the weight of the new edge
-    */
-    @throws[IllegalArgumentException]("if the weight is <= 0")
-    @inline final def <~> (that: Node, weight: Weight): Unit = {
-      this ~> (that, weight)
-      this <~ (that, weight)
-    }
+  extends EWNode(value)
+    with DirectedNode { self: Node =>
 
     /** @inheritdoc
       *

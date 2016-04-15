@@ -1,5 +1,7 @@
 package edu.allegheny.graph.unweighted
 
+import edu.allegheny.graph.Directed
+
 
 /** An unweighted directed graph.
   *
@@ -10,6 +12,7 @@ package edu.allegheny.graph.unweighted
   */
 class Digraph[V]
 extends Unweighted[V]
+  with Directed[V]
   with Traversable[Unweighted[V]#Node] {
 
   override type Node = DirectedUWNode
@@ -22,10 +25,8 @@ extends Unweighted[V]
   }
 
   class DirectedUWNode(value: V)
-  extends UWNode(value) { self: Node =>
-
-    def connectTo(that: Node): Unit
-      = if (!this.hasEdgeTo(that)) this addEdge that
+  extends UWNode(value)
+    with DirectedNode { self: Node =>
 
     /** @inheritdoc
       *
@@ -35,25 +36,6 @@ extends Unweighted[V]
     def shortestPathTo(to: Node): Seq[Node]
       = ???
 
-      /** Operator for creating an edge from another node to this node.
-        *
-        * Note that this node is only necessary on directed graphs.
-        *
-        * @param  that   the node to form an edge to this node.
-        */
-    @inline final def <~ (that: Node): Unit = that ~> this
-
-    /** Operator for creating a bi-directional edge between this node
-      * and another.
-      *
-      * Note that this node is only necessary on directed graphs.
-      *
-      * @param  that   the node to form a bi-directional edge with
-      */
-    @inline final def <~> (that: Node): Unit = {
-        this ~> that
-        this <~ that
-    }
   }
 
   /** Apply a function to each [[Node]] in this graph.

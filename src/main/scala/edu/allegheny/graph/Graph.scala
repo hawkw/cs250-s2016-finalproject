@@ -35,7 +35,25 @@ trait Graph[V] {
     @inline final def edges: Set[Edge] = _edges
 
     /** Add an edge from this node */
-    @inline final def addEdge(e: Edge): Unit =  _edges = _edges + e
+    @inline protected[this] def addEdge(e: Edge): Unit =  _edges = _edges + e
+
+    /** Operator for creating an edge from another node to this node.
+      *
+      * Note that this node is only necessary on directed graphs.
+      *
+      * @param  that   the node to form an edge to this node.
+      */
+    @inline final def ~> (that: Edge): Unit = this connectTo that
+
+    def connectTo(that: Edge): Unit
+
+    /** Operator for creating an edge from another node to this node.
+      *
+      * Note that this node is only necessary on directed graphs.
+      *
+      * @param  that   the node to form an edge to this node.
+      */
+    def <~ (that: Edge): Unit
 
     /**
      * Operator for checking if this node has an edge to another node.
@@ -44,6 +62,7 @@ trait Graph[V] {
      * @return true if this node has an edge to that node, false otherwise
      */
     @inline final def ~>? (that: Node): Boolean = this hasEdgeTo that
+
     /**
      * Operator for checking if another node has an edge to this
      *
@@ -55,7 +74,7 @@ trait Graph[V] {
      */
     @inline final def <~? (that: Node): Boolean = that hasEdgeTo this
 
-    def hasEdgeTo(node: Node): Boolean
+    def hasEdgeTo(that: Node): Boolean
 
     /** The _degree_ (or _valency_) of a node is the number of edges connecting
       * to that node.

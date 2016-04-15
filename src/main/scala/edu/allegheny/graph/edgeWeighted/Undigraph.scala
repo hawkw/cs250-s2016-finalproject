@@ -1,10 +1,8 @@
 package edu.allegheny.graph.edgeWeighted
 
-import org.scalactic.Requirements
+import edu.allegheny.graph.Undirected
 
-import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
-
-import Ord.Implicits._
+import scala.{specialized => sp}
 
 /** An edge-weighted undirected graph.
   *
@@ -16,10 +14,10 @@ import Ord.Implicits._
   *
   * Created by hawk on 4/11/16.
   */
-class Undigraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord]
+class Undigraph[V, @sp(Int, Long, Float, Double) Weight : Numeric : Ordering]
 extends EdgeWeighted[V, Weight]
-  with Traversable[EdgeWeighted[V, Weight]#Node]
-  with Requirements {
+  with Undirected[V]
+  with Traversable[EdgeWeighted[V, Weight]#Node]  {
 
   override type Node = UndirectedEWNode
   override type Edge = (Node, Weight)
@@ -31,16 +29,8 @@ extends EdgeWeighted[V, Weight]
   }
 
   class UndirectedEWNode(value: V)
-  extends EWNode(value) { self: Node =>
-
-    @throws[IllegalArgumentException]("if the weight is <= 0")
-    def connectTo(that: Node, weight: Weight): Unit = {
-      require(weight > implicitly[Numeric[Weight]].zero)
-      if (!this.hasEdgeTo(that)) {
-        this addEdge(that, weight)
-        that addEdge(this, weight)
-      }
-    }
+  extends EWNode(value)
+    with UndirectedNode { self: Node =>
 
     /** @inheritdoc
       *

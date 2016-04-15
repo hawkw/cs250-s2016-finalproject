@@ -1,5 +1,7 @@
 package edu.allegheny.graph.unweighted
 
+import edu.allegheny.graph.Undirected
+
 /** An unweighted directed graph.
   *
   * @tparam V the type of the value to associate with each node in the graph.
@@ -9,6 +11,7 @@ package edu.allegheny.graph.unweighted
   */
 class Undigraph[V]
 extends Unweighted[V]
+  with Undirected[V]
   with Traversable[Unweighted[V]#Node] {
 
   override type Node = UndirectedUWNode
@@ -21,13 +24,8 @@ extends Unweighted[V]
   }
 
   class UndirectedUWNode(value: V)
-  extends UWNode(value) { self: Node =>
-
-    def connectTo(that: Node): Unit
-      = if (!this.hasEdgeTo(that)) {
-          this addEdge that
-          that addEdge this
-        }
+  extends UWNode(value)
+    with UndirectedNode { self: Node =>
 
     /** @inheritdoc
       *i

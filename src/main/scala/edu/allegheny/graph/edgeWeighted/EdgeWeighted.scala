@@ -1,7 +1,8 @@
 package edu.allegheny.graph
 package edgeWeighted
 
-import scala.{specialized => sp}
+import scala.language.implicitConversions
+import Ordering.Implicits._
 
 /** A graph that is edge-weighted.
   *
@@ -19,34 +20,36 @@ import scala.{specialized => sp}
   *
   * Created by hawk on 4/11/16.
   */
-trait EdgeWeighted[V, @sp(Int, Long, Float, Double) Weight]
+abstract class EdgeWeighted[V, Weight: Numeric: Ordering]
 extends Graph[V] {
 
   override type Node <: EWNode
   override type Edge = (Node, Weight)
 
+//  @inline protected[this] implicit def edge2node(e: Edge): Node
+//    = e._1
+
   abstract class EWNode(value: V)
   extends NodeLike(value) { self: Node =>
+
+    @inline override final def <~ (edge: Edge): Unit = {
+      val (that, weight) = edge
+      that ~> (this, weight)
+    }
 
    /** Connect this node to another node with an edge with the given weight.
      *
      * The weight must be greater than zero.
      *
-     * @param  node   the node to connect this node to
-     * @param  weight the weight of the created edge
+     * @param edge the edge to add
      */
     @throws[IllegalArgumentException]("if the weight is <= 0")
-    def connectTo(node: Node, weight: Weight): Unit
+    override protected[this] def addEdge (edge: Edge): Unit
+      = { require(edge._2 > implicitly[Numeric[Weight]].zero)
+          _edges += edge
+        }
 
-   /** Operator for creating an edge from this node to another.
-     * @param  that   the node to form an edge to
-     * @param  weight the weight of the new edge
-     */
-    @throws[IllegalArgumentException]("if the weight is <= 0")
-    @inline final def ~> (that: Node, weight: Weight): Unit
-      = this connectTo (that, weight)
-
-    override def hasEdgeTo(node: Node): Boolean
+    @inline override def hasEdgeTo(node: Node): Boolean
      = _edges exists { case (n, _) => n == node }
 
     /** Returns the [[Weight]] of the edge to the given [[Node]], if one exists.
@@ -55,8 +58,8 @@ extends Graph[V] {
       * @return     `Some(Weight)` if this node has an edge to the given node,
       *             `None` otherwise.
       */
-    def weightTo(node: Node): Option[Weight]
-     = _edges find { case (n, _) => n == node } map { case (_, w) => w }
+    final def weightTo(node: Node): Option[Weight]
+      = _edges find { case (n, _) => n == node } map { case (_, w) => w }
   }
 
 }
