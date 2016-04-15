@@ -55,6 +55,35 @@ extends WordSpec
         b.connectTo(a)
         a ~>? b shouldBe false
       }
+      "using the <~>? operator to test for edges" should {
+        "return false when the edge is from A to B only" in {
+          val g = new unweighted.Digraph[Int]
+          val a = g node 1
+          val b = g node 2
+          a.connectTo(b)
+          a <~>? b shouldBe false
+        }
+        "return false when the edge is from B to A only" in {
+          val g = new unweighted.Digraph[Int]
+          val a = g node 1
+          val b = g node 2
+          b.connectTo(a)
+          a <~>? b shouldBe false
+        }
+        "return false when there are no edges" in {
+          val g = new unweighted.Digraph[Int]
+          val a = g node 1
+          val b = g node 2
+          a <~>? b shouldBe false
+        }
+        "return true when the edges are bi-directional" in {
+          val g = new unweighted.Digraph[Int]
+          val a = g node 1
+          val b = g node 2
+          a.connectTo(b)
+          b.connectTo(a)
+          a <~>? b shouldBe false
+        }
     }
     "using the <~? operator to test for edges" should {
       "return true when B has an edge to A" in {
@@ -90,14 +119,14 @@ extends WordSpec
         a.hasEdgeTo(b) shouldBe true
         b.hasEdgeTo(a) shouldBe true
       }
-      // "create a bidirectional edge between A and B using the <~> operator" in {
-      //   val g = new unweighted.Undigraph[Int]
-      //   val a = g node 1
-      //   val b = g node 2
-      //   a <~> b
-      //   a.hasEdgeTo(b) shouldBe true
-      //   b.hasEdgeTo(a) shouldBe true
-      // }
+      "create a bidirectional edge between A and B using the <~> operator" in {
+        val g = new unweighted.Undigraph[Int]
+        val a = g node 1
+        val b = g node 2
+        a <~> b
+        a.hasEdgeTo(b) shouldBe true
+        b.hasEdgeTo(a) shouldBe true
+      }
     }
     "using the ~>? operator to test for edges" should {
       "return true when A has an edge to B" in {
@@ -220,14 +249,14 @@ extends WordSpec
         a.hasEdgeTo(b) shouldBe true
         b.hasEdgeTo(a) shouldBe true
       }
-      // "create a bidirectional edge between A and B using the <~> operator" in {
-      //   val g = new edgeWeighted.Undigraph[Int, Double]
-      //   val a = g node 1
-      //   val b = g node 2
-      //   a <~> b
-      //   a.hasEdgeTo(b) shouldBe true
-      //   b.hasEdgeTo(a) shouldBe true
-      // }
+      "create a bidirectional edge between A and B using the <~> operator" in {
+        val g = new edgeWeighted.Undigraph[Int, Double]
+        val a = g node 1
+        val b = g node 2
+        a <~> b
+        a.hasEdgeTo(b) shouldBe true
+        b.hasEdgeTo(a) shouldBe true
+      }
     }
     "using the ~>? operator to test for edges" should {
       "return true when A has an edge to B" in {
