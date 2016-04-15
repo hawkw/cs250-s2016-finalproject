@@ -55,6 +55,7 @@ extends WordSpec
         b.connectTo(a)
         a ~>? b shouldBe false
       }
+    }
       "using the <~>? operator to test for edges" should {
         "return false when the edge is from A to B only" in {
           val g = new unweighted.Digraph[Int]
@@ -239,7 +240,7 @@ extends WordSpec
     }
   }
 
-  "An edgeWeighted, undirected graph" when {
+  "An edge weighted, undirected graph" when {
     "using operators to create edges" should {
       "create an edge from A to B using the ~> operator" in {
         val g = new edgeWeighted.Undigraph[Int, Double]
