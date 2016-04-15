@@ -2,6 +2,8 @@ language: scala
 scala:
   - 2.12.0-M3
   - 2.11.8
+env:
+  secure: "PZMGLu2Ucr3Em8ZlyWJM/9HAAqF05WAuIvQLpst3lQ7sJam7pTxpGMH3cCAYBjBlOdXyFdknedwu9qoTMlUjkaJRWVz46msfXycWj4otvAW7879o8yXXHRSMMkHqCob5jIixzVZIc0iDFPdf5bWL4byH7bj5bWlpYQcc6sAza7GFOGoWNCQv9vH0ChN38RCeNRheeOKCy85JVgNnl6+3ePjulx/7FxGo2U5Pr54aMQW3VxIbLVl8JticN1ei7NEWauLUXa9uDLiZ2snKFZ0E17Ehf61lj3I+C1xs9f4GUg1Z+4GrtDz9aDVpC3l7/xm02ECQDpBASVBWRo++loLspSVHKPos29yy8CXFzWYaqqwMRPFehgDmpnLC32aI27+qULs9dDa1McjAaxClTcyO6TIUJQf0jaCJu6U5LPtaIqUfN4iOZSVGqfSfqVLd8QhA9XhqdALCS4Dn6q+cqfTLAKrXHBTD722NTj+PNTYWXNELdCW71/rkJAYLRSNs9mXKrty8zJmwPg3MHvQh7vjK8JRc9NSSBe8ZNHxHGqlg2+bqbddGrDd8hD+nvlsVkIynumQbwyo+dEb649HtRnDPhwDmGcjFa9cpIqSpS2067ZEjoouHyUk+UujLqPSPPz0W4kv69pBmEG+h0h/be268R7kHKazsMvOdXmp5iZway+A="
 jdk:
   - oraclejdk8
 matrix:
@@ -19,5 +21,9 @@ script:
   - find $HOME/.sbt -name "*.lock" | xargs rm
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 after_success:
- - python <(curl -s https://raw.githubusercontent.com/TouK/sputnik-ci/master/sputnik-ci.py)
-- bash <(curl -s https://codecov.io/bash)
+  - python <(curl -s https://raw.githubusercontent.com/TouK/sputnik-ci/master/sputnik-ci.py)
+  - bash <(curl -s https://codecov.io/bash)
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage test
+  - sbt ++$TRAVIS_SCALA_VERSION coverageReport
+  - sbt ++$TRAVIS_SCALA_VERSION coverageAggregate
+  - sbt ++$TRAVIS_SCALA_VERSION codacyCoverage
