@@ -12,7 +12,6 @@ import scala.io.Source
 class GraphSpec
 extends WordSpec
   with Matchers
-  // with NodeMatchers
   with OptionValues {
 
   "An unweighted, directed graph" when {
@@ -56,7 +55,7 @@ extends WordSpec
         a ~>? b shouldBe false
       }
     }
-      "using the <~>? operator to test for edges" should {
+    "using the <~>? operator to test for edges" should {
         "return false when the edge is from A to B only" in {
           val g = new unweighted.Digraph[Int]
           val a = g node 1
@@ -86,7 +85,6 @@ extends WordSpec
           a <~>? b shouldBe false
         }
       }
-    }
     "using the <~? operator to test for edges" should {
       "return true when B has an edge to A" in {
         val g = new unweighted.Digraph[Int]
