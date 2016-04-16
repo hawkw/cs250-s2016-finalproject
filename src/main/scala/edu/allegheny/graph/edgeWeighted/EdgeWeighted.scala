@@ -89,8 +89,9 @@ extends Graph[V] {
 
       while (q nonEmpty) {
         val (u, dist_u) = q.dequeue()
-        for { (v, dist_uv) <- u.edges if (dist_uv + dist_u) < dist(v) } {
-          dist += v -> (dist_uv + dist_u)
+        for { (v, dist_uv) <- u.edges
+              dist_alt = dist_uv + dist_u if dist_alt < dist(v) } {
+          dist += v -> dist_alt
           prev += v -> u
           ??? // this is where Scala's priority queue doesn't do the thing
               // that we want
