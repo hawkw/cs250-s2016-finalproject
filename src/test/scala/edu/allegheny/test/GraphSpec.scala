@@ -85,6 +85,7 @@ extends WordSpec
           b.connectTo(a)
           a <~>? b shouldBe false
         }
+      }
     }
     "using the <~? operator to test for edges" should {
       "return true when B has an edge to A" in {
@@ -301,6 +302,17 @@ extends WordSpec
         val b = g node 2
         a.connectTo(b, 0.5)
         a <~? b shouldBe true
+      }
+    }
+    "finding a shortest path" should {
+      "return the path whose weights are minimal" in {
+        val tinyEWD = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
+        val g = GraphGenerator parse tinyEWD
+        val a = g nodes 0
+        val b = g nodes 3
+        val path = a shortestPathTo b
+        val shortest = Seq(a, g nodes 2, g nodes 7, b)
+        path shouldBe shortest 
       }
     }
   }
