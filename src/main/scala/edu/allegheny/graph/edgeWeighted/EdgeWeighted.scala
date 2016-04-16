@@ -3,10 +3,12 @@ package edgeWeighted
 
 import edu.allegheny.graph.edgeWeighted.Limited.Limited
 
+import scala.annotation.tailrec
+import scala.collection.mutable
 import scala.language.{implicitConversions, postfixOps}
 import Numeric.Implicits._
 import Ordering.Implicits._
-import scala.collection.mutable
+
 
 /** A graph that is edge-weighted.
   *
@@ -65,7 +67,13 @@ extends Graph[V] {
     final def weightTo(node: Node): Option[Weight]
       = _edges find { case (n, _) => n == node } map { case (_, w) => w }
 
-    def djikstra(target: Node): Seq[Node] = {
+    /**
+      * The shortest-path tree computed using Djikstra's algorithm.
+      *
+      * These are `lazy val`s so that they do not have to be re-calculated
+      * ever time we want to find the shortest path to a given node.
+      */
+    lazy private[this] val (dist, prev) = {
       // Cache the max (infinity) value of Weight so we don't have to fetch
       // it multiple times
       val maxDist = implicitly[Limited[Weight]].max
@@ -98,8 +106,24 @@ extends Graph[V] {
         }
       }
 
-      ???
+      (dist, prev)
     }
+
+    /** Find the shortest path from this node to the specified node.
+      *
+      * @param to the [[Node]] to find the shortest path to.
+      * @return   a list of nodes representing the path (in order)
+      */
+    def shortestPathTo(to: Node): Seq[Node]
+      = {
+          @tailrec
+          def _spt(t: Node, path: mutable.Buffer[Node]): mutable.Buffer[Node]
+          = prev.get(t) match {
+              case Some(u: Node) => _spt(u, u +: path)
+              case None => path
+            }
+          to +: _spt(to, mutable.Buffer[Node]())
+        }
   }
 
 }
