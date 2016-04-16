@@ -1,4 +1,6 @@
 package edu.allegheny.onion.simulation
+import edu.allegheny.graph.edgeWeighted.Undigraph
+
 import scala.io.Source
 import scala.language.postfixOps
 
@@ -8,8 +10,8 @@ import scala.language.postfixOps
   */
 object GraphGenerator {
 
-	@deprecated("use edgeWeighted.Undigraph.parse() instead")
-	def parse(source: io.Source): Network = {
+	@deprecated("use simulation.parseNetwork() instead")
+	def parse(source: Source): Network = {
 		val graph = new Network()
 
 		// val f = Source.fromFile(new java.io.File(path))
