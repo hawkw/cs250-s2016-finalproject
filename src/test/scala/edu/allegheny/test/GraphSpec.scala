@@ -237,6 +237,18 @@ extends WordSpec
         a <~? b shouldBe false
       }
     }
+
+    "finding a shortest path" should {
+      "return the path whose weights are minimal" in {
+        val tinyEWD = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
+        val g = GraphGenerator parse tinyEWD
+        val a = g nodes 0
+        val b = g nodes 3
+        val path = a shortestPathTo b
+        val shortest = Seq(a, g nodes 2, g nodes 7, b)
+        path shouldBe shortest
+      }
+    }
   }
 
   "An edge weighted, undirected graph" when {
@@ -303,7 +315,7 @@ extends WordSpec
       }
     }
     "finding a shortest path" should {
-      "return the path whose weights are minimal" ignore {
+      "return the path whose weights are minimal" in {
         val tinyEWD = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
         val g = GraphGenerator parse tinyEWD
         val a = g nodes 0
