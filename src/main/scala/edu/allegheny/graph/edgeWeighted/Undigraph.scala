@@ -1,8 +1,9 @@
 package edu.allegheny.graph.edgeWeighted
 
 import edu.allegheny.graph.Undirected
+import edu.allegheny.graph.edgeWeighted.Limited.Limited
 
-import scala.{specialized => sp}
+import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
 import scala.io.Source
 import scala.language.postfixOps
 
@@ -16,7 +17,7 @@ import scala.language.postfixOps
   *
   * Created by hawk on 4/11/16.
   */
-class Undigraph[V, @sp(Int, Long, Float, Double) Weight : Numeric : Ordering]
+class Undigraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord : Limited]
 extends EdgeWeighted[V, Weight]
   with Undirected[V]
   with Traversable[EdgeWeighted[V, Weight]#Node]  {
@@ -32,17 +33,7 @@ extends EdgeWeighted[V, Weight]
 
   class UndirectedEWNode(value: V)
   extends EWNode(value)
-    with UndirectedNode { self: Node =>
-
-    /** @inheritdoc
-      *
-      * In an edge-weighted graph, the shortest path is the path for which
-      * the sum of the weights of the edges traversed is the lowest.
-      */
-    def shortestPathTo(to: Node): Seq[Node]
-      = ???
-
-  }
+    with UndirectedNode
 
   /** Apply a function to each [[Node]] in this graph.
     *
@@ -80,7 +71,8 @@ object Undigraph {
     * @return        a graph based on the one in the data file.
     * @author        Aubrey Collins
     */
-  def parse[V, W : Numeric](mkValue: () => V)(source: Source): Undigraph[V, W]
+  def parse[V, W : Numeric : Limited](mkValue: () => V)
+                                     (source: Source): Undigraph[V, W]
     = {
       val graph = new Undigraph[V, W]()
 

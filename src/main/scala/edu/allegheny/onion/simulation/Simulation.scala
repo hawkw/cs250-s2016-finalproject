@@ -1,13 +1,13 @@
 package edu.allegheny.onion.simulation
 import edu.allegheny.graph.edgeWeighted.Undigraph
+import edu.allegheny.graph.edgeWeighted.Limited.Implicits.DoubleLimits
 
 /**
   * Created by hawk on 4/12/16.
   */
 object Simulation {
 
-  val network: Undigraph[Peer, Double]
-    = new Undigraph()
+  val network = new Undigraph[Peer, Double]()
 
   val p1 = network.node(new Peer())
   val p2 = network.node(new Peer())

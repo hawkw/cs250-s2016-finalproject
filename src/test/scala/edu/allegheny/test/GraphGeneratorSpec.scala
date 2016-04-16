@@ -1,6 +1,7 @@
 package edu.allegheny.test
 
 import edu.allegheny.graph.edgeWeighted.Digraph
+import edu.allegheny.graph.edgeWeighted.Limited.Implicits._
 import edu.allegheny.graph.{Graph, edgeWeighted}
 import edu.allegheny.onion.simulation.{GraphGenerator, Peer, parseNetwork}
 import org.scalatest.{Matchers, OptionValues, WordSpec}

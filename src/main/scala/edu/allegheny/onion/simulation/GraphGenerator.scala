@@ -1,5 +1,5 @@
 package edu.allegheny.onion.simulation
-import edu.allegheny.graph.edgeWeighted.Undigraph
+import edu.allegheny.graph.edgeWeighted.Limited.Implicits._
 
 import scala.io.Source
 import scala.language.postfixOps

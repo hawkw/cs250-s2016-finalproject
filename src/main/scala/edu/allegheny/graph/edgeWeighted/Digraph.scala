@@ -1,9 +1,10 @@
 package edu.allegheny.graph.edgeWeighted
 
 import edu.allegheny.graph.Directed
+import edu.allegheny.graph.edgeWeighted.Limited.Limited
 import org.scalactic.Requirements
 
-import scala.{specialized => sp}
+import scala.{Numeric => Num, Ordering => Ord, specialized => sp}
 import scala.languageFeature.postfixOps
 
 
@@ -19,7 +20,7 @@ import scala.languageFeature.postfixOps
   *
   * Created by hawk on 4/11/16.
   */
-class Digraph[V, @sp(Int, Long, Float, Double) Weight : Numeric : Ordering]
+class Digraph[V, @sp(Int, Long, Float, Double) Weight : Num : Ord: Limited]
 extends EdgeWeighted[V, Weight]
   with Directed[V]
   with Traversable[EdgeWeighted[V, Weight]#Node]
@@ -36,17 +37,7 @@ extends EdgeWeighted[V, Weight]
 
   class DirectedEWNode(value: V)
   extends EWNode(value)
-    with DirectedNode { self: Node =>
-
-    /** @inheritdoc
-      *
-      * In an edge-weighted graph, the shortest path is the path for which
-      * the sum of the weights of the edges traversed is the lowest.
-      */
-    def shortestPathTo(to: Node): Seq[Node]
-      = ???
-
-  }
+    with DirectedNode
 
   /** Apply a function to each [[Node]] in this graph.
     * @param f
@@ -76,7 +67,8 @@ object Digraph {
     * @return        a graph based on the one in the data file.
     * @author        Aubrey Collins
     */
-  def parse[V, W : Numeric](mkValue: () => V)(source: io.Source): Digraph[V, W]
+  def parse[V, W : Numeric : Limited](mkValue: () => V)
+                                     (source: io.Source): Digraph[V, W]
     = {
       val graph = new Digraph[V, W]()
 

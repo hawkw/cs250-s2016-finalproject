@@ -80,17 +80,16 @@ extends Graph[V] {
 
       // create a minimum priority queue of (Node, Weight) pairs
       var q = mutable.PriorityQueue.empty[(Node, Weight)](
-        Ordering.by((_: (Node, Weight))._1).reverse
+        Ordering.by((_: (Node, Weight))._2).reverse
       )
 
       // Previous node for each node
-      var prev = Map[Node, Option[Node]]()
+      var prev = Map[Node, Node]()
 
       // Distances to each node (start with a distance of zero to this node)
       var dist = Map[Node, Weight](this -> implicitly[Numeric[Weight]].zero)
 
       for { node <- nodes if node != this } {
-        prev += node -> None
         dist += node -> maxDist
         q += node -> maxDist
       }
@@ -109,17 +108,17 @@ extends Graph[V] {
       (dist, prev)
     }
 
-    /** Find the shortest path from this node to the specified node.
+    /** @inheritdoc
       *
-      * @param to the [[Node]] to find the shortest path to.
-      * @return   a list of nodes representing the path (in order)
+      * In an edge-weighted graph, the shortest path is the path for which
+      * the sum of the weights of the edges traversed is the lowest.
       */
     def shortestPathTo(to: Node): Seq[Node]
       = {
           @tailrec
           def _spt(t: Node, path: mutable.Buffer[Node]): mutable.Buffer[Node]
           = prev.get(t) match {
-              case Some(u: Node) => _spt(u, u +: path)
+              case Some(u) => _spt(u, u +: path)
               case None => path
             }
           to +: _spt(to, mutable.Buffer[Node]())

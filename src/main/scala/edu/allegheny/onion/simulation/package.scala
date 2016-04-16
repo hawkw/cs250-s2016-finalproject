@@ -1,6 +1,7 @@
 package edu.allegheny.onion
 import edu.allegheny.graph.edgeWeighted
 import edu.allegheny.graph.edgeWeighted.Undigraph
+import edu.allegheny.graph.edgeWeighted.Limited.Implicits._
 
 import scala.io.Source
 
