@@ -34,30 +34,48 @@ extends Graph[V] {
 //  @inline protected[this] implicit def edge2node(e: Edge): Node
 //    = e._1
 
+
   abstract class EWNode(value: V)
   extends NodeLike(value) { self: Node =>
 
-    private[this] case class SPState( prev: Map[Node, Node]
-                                    , dist: Map[Node, Weight] )
-
+    // Our implementation of Djikstra's algorithm computes the shortest-path
+    // tree from this node: when we run Djikstra's algorithm a single time,
+    // we have already done the heavy-lifting of finding the shortest path to
+    // each other node. Thus, it makes sense to want to cache this
+    // information, rather than having to re-calcualte it every time we want to
+    // find the shortest path to a node.
+    private case class SPState(prev: Map[Node, Node], dist: Map[Node, Weight])
+    // The obvious solution would be to just use a `lazy val` to cache our
+    // shortest-path tree, so that it is calculated the first time we need to
+    // use it. However, this has a major issue: if we calculate the
+    // shortest-path tree and then the topography of the graph changes, the tree
+    // could now be incorrect. Therefore, we make it an Option instead.
     private[this] var spCache: Option[SPState] = None
-
-    // Cache the max (infinity) value of Weight so we don't have to fetch
-    // it multiple times
-    private[this] lazy val maxDist = implicitly[Limited[Weight]].max
-
+    // When the node's edges have changed, we have to invalidate the cache.
+    // We do this simply by setting the cahce equal to `None`.
     @inline final protected[this] def invalidateCache() { spCache = None }
-
+    // Rather than re-calculating the shortest-path tree every time the node's
+    // edges change, however, we only update the cache when we need to access
+    // it. This is because it is quite likely that we will often make multiple
+    // new connections to a node before needing to find the shortest path to
+    // some other node, such as when a graph is initially being created. It
+    // would be a waste of time to re-compute the shortest path tree every time
+    // the node's edges change, as we may not need to find a shortest path
+    // before the edges change again.
     @inline final protected[this] def getCacheOrUpdate: SPState
       = spCache match {
           case Some(cache) => cache
           case None =>
-            val cache = makeSPState()
+            val cache = djikstra()
             spCache = Some(cache)
             cache
         }
 
-    @inline final private[this] def makeSPState(): SPState = {
+    // We can also cache the max (infinity) value of Weight so we don't have to
+    // fetch it multiple times
+    private lazy val maxDist = implicitly[Limited[Weight]].max
+
+    @inline final private[this] def djikstra(): SPState = {
       // create a minimum priority queue of (Node, Weight) pairs
       var q = mutable.PriorityQueue.empty[(Node, Weight)](
         Ordering.by((_: (Node, Weight))._2).reverse
