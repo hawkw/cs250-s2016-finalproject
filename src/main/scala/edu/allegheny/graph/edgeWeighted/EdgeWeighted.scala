@@ -1,8 +1,12 @@
 package edu.allegheny.graph
 package edgeWeighted
 
-import scala.language.implicitConversions
+import edu.allegheny.graph.edgeWeighted.Limited.Limited
+
+import scala.language.{implicitConversions, postfixOps}
+import Numeric.Implicits._
 import Ordering.Implicits._
+import scala.collection.mutable
 
 /** A graph that is edge-weighted.
   *
@@ -15,12 +19,11 @@ import Ordering.Implicits._
   *                graph.
   * @tparam Weight the type of the weight value associated with each edge in
   *                the graph.
-  *
   * @author Hawk Weisman
   *
   * Created by hawk on 4/11/16.
   */
-abstract class EdgeWeighted[V, Weight: Numeric: Ordering]
+abstract class EdgeWeighted[V, Weight: Numeric: Ordering: Limited]
 extends Graph[V] {
 
   override type Node <: EWNode
@@ -61,6 +64,41 @@ extends Graph[V] {
       */
     final def weightTo(node: Node): Option[Weight]
       = _edges find { case (n, _) => n == node } map { case (_, w) => w }
+
+    def djikstra(target: Node): Seq[Node] = {
+      // Cache the max (infinity) value of Weight so we don't have to fetch
+      // it multiple times
+      val maxDist = implicitly[Limited[Weight]].max
+
+      // create a minimum priority queue of (Node, Weight) pairs
+      var q = mutable.PriorityQueue.empty[(Node, Weight)](
+        Ordering.by((_: (Node, Weight))._1).reverse
+      )
+
+      // Previous node for each node
+      var prev = Map[Node, Option[Node]]()
+
+      // Distances to each node (start with a distance of zero to this node)
+      var dist = Map[Node, Weight](this -> implicitly[Numeric[Weight]].zero)
+
+      for { node <- nodes if node != this } {
+        prev += node -> None
+        dist += node -> maxDist
+        q += node -> maxDist
+      }
+
+      while (q nonEmpty) {
+        val (u, dist_u) = q.dequeue()
+        for { (v, dist_uv) <- u.edges if (dist_uv + dist_u) < dist(v) } {
+          dist += v -> (dist_uv + dist_u)
+          prev += v -> u
+          ??? // this is where Scala's priority queue doesn't do the thing
+              // that we want
+        }
+      }
+
+      ???
+    }
   }
 
 }
