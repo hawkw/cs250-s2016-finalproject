@@ -74,6 +74,8 @@ trait Graph[V] {
      */
     @inline final def <~? (that: Node): Boolean = that hasEdgeTo this
 
+    @inline def <~>? (that: Node): Boolean = this <~? that && this ~>? that
+
     def hasEdgeTo(that: Node): Boolean
 
     /** The _degree_ (or _valency_) of a node is the number of edges connecting
