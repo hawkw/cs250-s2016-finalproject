@@ -37,47 +37,27 @@ extends Graph[V] {
   abstract class EWNode(value: V)
   extends NodeLike(value) { self: Node =>
 
-    @inline override final def <~ (edge: Edge): Unit = {
-      val (that, weight) = edge
-      that ~> (this, weight)
-    }
+    private[this] case class SPState( prev: Map[Node, Node]
+                                    , dist: Map[Node, Weight] )
 
-   /** Connect this node to another node with an edge with the given weight.
-     *
-     * The weight must be greater than zero.
-     *
-     * @param edge the edge to add
-     */
-    @throws[IllegalArgumentException]("if the weight is <= 0")
-    override protected[this] def addEdge (edge: Edge): Unit
-      = { val (_, weight: Weight) = edge
-          require(weight > implicitly[Numeric[Weight]].zero)
-          _edges += edge
+    private[this] var spCache: Option[SPState] = None
+
+    // Cache the max (infinity) value of Weight so we don't have to fetch
+    // it multiple times
+    private[this] lazy val maxDist = implicitly[Limited[Weight]].max
+
+    @inline final protected[this] def invalidateCache() { spCache = None }
+
+    @inline final protected[this] def getCacheOrUpdate: SPState
+      = spCache match {
+          case Some(cache) => cache
+          case None =>
+            val cache = makeSPState()
+            spCache = Some(cache)
+            cache
         }
 
-    @inline override def hasEdgeTo(node: Node): Boolean
-     = _edges exists { case (n, _) => n == node }
-
-    /** Returns the [[Weight]] of the edge to the given [[Node]], if one exists.
-      *
-      * @param node the [[Node]] to find the weight of the edge to
-      * @return     `Some(Weight)` if this node has an edge to the given node,
-      *             `None` otherwise.
-      */
-    final def weightTo(node: Node): Option[Weight]
-      = _edges find { case (n, _) => n == node } map { case (_, w) => w }
-
-    /**
-      * The shortest-path tree computed using Djikstra's algorithm.
-      *
-      * These are `lazy val`s so that they do not have to be re-calculated
-      * ever time we want to find the shortest path to a given node.
-      */
-    lazy private[this] val (dist, prev) = {
-      // Cache the max (infinity) value of Weight so we don't have to fetch
-      // it multiple times
-      val maxDist = implicitly[Limited[Weight]].max
-
+    @inline final private[this] def makeSPState(): SPState = {
       // create a minimum priority queue of (Node, Weight) pairs
       var q = mutable.PriorityQueue.empty[(Node, Weight)](
         Ordering.by((_: (Node, Weight))._2).reverse
@@ -97,32 +77,76 @@ extends Graph[V] {
       while (q nonEmpty) {
         val (u, dist_u) = q.dequeue()
         for { (v, dist_uv) <- u.edges
-              dist_alt = dist_uv + dist_u if dist_alt < dist(v) } {
+          dist_alt = dist_uv + dist_u if dist_alt < dist(v) } {
           dist += v -> dist_alt
           prev += v -> u
           ??? // this is where Scala's priority queue doesn't do the thing
-              // that we want
+          // that we want
         }
       }
 
-      (dist, prev)
+      SPState(prev, dist)
     }
+
+    @inline override final def <~ (edge: Edge): Unit = {
+      val (that, weight) = edge
+      that ~> (this, weight)
+    }
+
+   /** Connect this node to another node with an edge with the given weight.
+     *
+     * The weight must be greater than zero.
+     *
+     * @param edge the edge to add
+     */
+    @throws[IllegalArgumentException]("if the weight is <= 0")
+    override protected[this] def addEdge (edge: Edge): Unit
+      = { val (_, weight: Weight) = edge
+          require(weight > implicitly[Numeric[Weight]].zero)
+          _edges += edge
+          invalidateCache()
+        }
+
+    @inline override def hasEdgeTo(node: Node): Boolean
+     = _edges exists { case (n, _) => n == node }
+
+    /** Returns the [[Weight]] of the edge to the given [[Node]], if one exists.
+      *
+      * @param node the [[Node]] to find the weight of the edge to
+      * @return     `Some(Weight)` if this node has an edge to the given node,
+      *             `None` otherwise.
+      */
+    final def weightTo(node: Node): Option[Weight]
+      = _edges find { case (n, _) => n == node } map { case (_, w) => w }
+
 
     /** @inheritdoc
       *
       * In an edge-weighted graph, the shortest path is the path for which
       * the sum of the weights of the edges traversed is the lowest.
       */
-    def shortestPathTo(to: Node): Seq[Node]
-      = {
+    override def shortestPathTo(to: Node): Seq[Node]
+      = { val SPState(prev, _) = getCacheOrUpdate
+
           @tailrec
           def _spt(t: Node, path: mutable.Buffer[Node]): mutable.Buffer[Node]
-          = prev.get(t) match {
-              case Some(u) => _spt(u, u +: path)
-              case None => path
-            }
+            = prev.get(t) match {
+                case Some(u) => _spt(u, u +: path)
+                case None => path
+              }
+
           to +: _spt(to, mutable.Buffer[Node]())
         }
+
+    /**
+      * Returns the shortest distance to the given node, calculated using
+      * Djikstra's algorithm.
+      *
+      * @param to the node to get the best distance to
+      * @return   the shortest distance to that node.
+      */
+   @inline def shortestDistanceTo(to: Node): Weight
+      = getCacheOrUpdate.dist to
   }
 
 }
