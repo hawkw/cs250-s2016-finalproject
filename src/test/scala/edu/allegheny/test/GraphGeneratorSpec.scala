@@ -1,7 +1,7 @@
 package edu.allegheny.test
 
 import edu.allegheny.graph.{Graph, edgeWeighted}
-import edu.allegheny.onion.simulation.{GraphGenerator, Peer}
+import edu.allegheny.onion.simulation.{GraphGenerator, Peer, parseNetwork}
 import org.scalatest.{Matchers, OptionValues, WordSpec}
 
 import scala.io.Source
@@ -16,22 +16,21 @@ extends WordSpec
   with OptionValues {
 
   "The GraphGenerator" when {
-    "parsing tinyEWD.txt" should {
-      def tinyEWD: Source = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
+    def tinyEWD: Source = Source.fromURL(getClass.getResource("/tinyEWD.txt"))
+    "parsing tinyEWD.txt as an undirected graph " should {
+
 
       "produce a network with the correct number of nodes" in {
-        val network = GraphGenerator parse tinyEWD
-
-        network should have ('graphOrder (8))
+        parseNetwork(tinyEWD) should have ('graphOrder (8))
       }
       "produce a network with the correct number of edges" in {
-        val network: Graph[Peer] = GraphGenerator parse tinyEWD
+        val network: Graph[Peer] = parseNetwork(tinyEWD)
         // Note that the expected number of edges is two fewer than in the file
         // since the file expects the graph to be directed
         network should have ('graphSize (13))
       }
       "connect the correct nodes to each other" in {
-        val network: Graph[Peer] = GraphGenerator parse tinyEWD
+        val network: Graph[Peer] = parseNetwork(tinyEWD)
 
 //        4 5 0.35
         network.nodes(4).hasEdgeTo(network.nodes(5)) shouldBe true
@@ -67,7 +66,7 @@ extends WordSpec
       }
       "connect the nodes with the correct weights" in {
         val network: edgeWeighted.Undigraph[Peer, Double]
-          = GraphGenerator parse tinyEWD
+          = parseNetwork(tinyEWD)
 
 //        4 5 0.35
         network.nodes(4).weightTo(network.nodes(5)).value shouldBe 0.35
