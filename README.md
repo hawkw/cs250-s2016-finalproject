@@ -1,4 +1,4 @@
-Optimised Onion Routing [![Travis branch](https://img.shields.io/travis/hawkw/cs250-s2016-finalproject/master.svg?style=flat-square)](https://travis-ci.org/hawkw/cs250-s2016-finalproject) [![Codacy](https://img.shields.io/codacy/a7e9e2b8213c43f7afd419e1750f90f1.svg?style=flat-square)]() [![Sputnik](https://sputnik.ci/conf/badge)](https://sputnik.ci/app#/builds/hawkw/cs250-s2016-finalproject)
+Optimised Onion Routing [![Travis branch](https://img.shields.io/travis/hawkw/cs250-s2016-finalproject/master.svg)](https://travis-ci.org/hawkw/cs250-s2016-finalproject) [![Codacy](https://img.shields.io/codacy/a7e9e2b8213c43f7afd419e1750f90f1.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/hawkw/cs250-s2016-finalproject/master.svg?maxAge=2592000)](https://codecov.io/github/hawkw/cs250-s2016-finalproject)
 =====================
 
 Aubrey Collins & Hawk Weisman, CMPSC250 Spring 2016 Final Project 
