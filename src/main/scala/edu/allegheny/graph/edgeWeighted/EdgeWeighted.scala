@@ -44,32 +44,35 @@ extends Graph[V] {
     // each other node. Thus, it makes sense to want to cache this
     // information, rather than having to re-calcualte it every time we want to
     // find the shortest path to a node.
-    private case class SPState(prev: Map[Node, Node], dist: Map[Node, Weight])
-    // The obvious solution would be to just use a `lazy val` to cache our
-    // shortest-path tree, so that it is calculated the first time we need to
-    // use it. However, this has a major issue: if we calculate the
-    // shortest-path tree and then the topography of the graph changes, the tree
-    // could now be incorrect. Therefore, we make it an Option instead.
-    private[this] var spCache: Option[SPState] = None
-    // When the node's edges have changed, we have to invalidate the cache.
-    // We do this simply by setting the cahce equal to `None`.
-    @inline final protected[this] def invalidateCache() { spCache = None }
-    // Rather than re-calculating the shortest-path tree every time the node's
-    // edges change, however, we only update the cache when we need to access
-    // it. This is because it is quite likely that we will often make multiple
-    // new connections to a node before needing to find the shortest path to
-    // some other node, such as when a graph is initially being created. It
-    // would be a waste of time to re-compute the shortest path tree every time
-    // the node's edges change, as we may not need to find a shortest path
-    // before the edges change again.
-    @inline final protected[this] def getCacheOrUpdate: SPState
-      = spCache match {
-          case Some(cache) => cache
-          case None =>
-            val cache = djikstra()
-            spCache = Some(cache)
-            cache
-        }
+    protected[this] type SPState = (Map[Node, Node], Map[Node, Weight])
+    private[this] object SPCache {
+      // The obvious solution would be to just use a `lazy val` to cache our
+      // shortest-path tree, so that it is calculated the first time we need to
+      // use it. However, this has a major issue: if we calculate the
+      // shortest-path tree and then the topography of the graph changes, the
+      // tree could now be incorrect. Therefore, we make it an Option instead.
+      private[this] var cache: Option[SPState] = None
+      // When the node's edges have changed, we have to invalidate the cache.
+      // We do this simply by setting the cahce equal to `None`.
+      @inline final def invalidate() { cache = None }
+      // Rather than re-calculating the shortest-path tree every time the node's
+      // edges change, however, we only update the cache when we need to access
+      // it. This is because it is quite likely that we will often make multiple
+      // new connections to a node before needing to find the shortest path to
+      // some other node, such as when a graph is initially being created. It
+      // would be a waste of time to re-compute the shortest path tree every time
+      // the node's edges change, as we may not need to find a shortest path
+      // before the edges change again.
+      @inline final def getOrUpdate: SPState
+      = cache match {
+        case Some(c) => c
+        case None =>
+          val c = djikstra()
+          cache = Some(c)
+          c
+      }
+    }
+
 
     // We can also cache the max (infinity) value of Weight so we don't have to
     // fetch it multiple times
@@ -103,7 +106,7 @@ extends Graph[V] {
         }
       }
 
-      SPState(prev, dist)
+      (prev, dist)
     }
 
     @inline override final def <~ (edge: Edge): Unit = {
@@ -122,7 +125,7 @@ extends Graph[V] {
       = { val (_, weight: Weight) = edge
           require(weight > implicitly[Numeric[Weight]].zero)
           _edges += edge
-          invalidateCache()
+          SPCache.invalidate()
         }
 
     @inline override def hasEdgeTo(node: Node): Boolean
@@ -144,7 +147,7 @@ extends Graph[V] {
       * the sum of the weights of the edges traversed is the lowest.
       */
     override def shortestPathTo(to: Node): Seq[Node]
-      = { val SPState(prev, _) = getCacheOrUpdate
+      = { val (prev, _) = SPCache.getOrUpdate
 
           @tailrec
           def _spt(t: Node, path: mutable.Buffer[Node]): mutable.Buffer[Node]
@@ -164,7 +167,7 @@ extends Graph[V] {
       * @return   the shortest distance to that node.
       */
    @inline def shortestDistanceTo(to: Node): Weight
-      = getCacheOrUpdate.dist to
+      = { val (_, dist) = SPCache.getOrUpdate; dist(to) }
   }
 
 }
