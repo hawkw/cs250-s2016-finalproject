@@ -122,7 +122,7 @@ extends Graph[V] {
      */
     @throws[IllegalArgumentException]("if the weight is <= 0")
     override protected[this] def addEdge (edge: Edge): Unit
-      = { val (_, weight: Weight) = edge
+      = { val (_, weight) = edge
           require(weight > implicitly[Numeric[Weight]].zero)
           _edges += edge
           SPCache.invalidate()
