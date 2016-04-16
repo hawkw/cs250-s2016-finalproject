@@ -3,6 +3,8 @@ package edu.allegheny.graph.edgeWeighted
 import edu.allegheny.graph.Undirected
 
 import scala.{specialized => sp}
+import scala.io.Source
+import scala.language.postfixOps
 
 /** An edge-weighted undirected graph.
   *
@@ -57,4 +59,46 @@ extends EdgeWeighted[V, Weight]
     */
   @inline override def graphSize: Int = super.graphSize / 2
 
+}
+
+object Undigraph {
+
+  /**
+    * Parse an edge-weighted undirected graph.
+    *
+    * Parse an edge-weighted undirected graph from the edge-weighted graph
+    * description format from _Algorithms_, 4th Edition.
+    *
+    * @param mkValue a function that produces the values to place in each node.
+    * @param source  a `Source` containing the text to parse
+    * @tparam V      the type of the values in the graph
+    * @tparam W      the type of the weights in the graph (note that this
+    *                should probably be either `Double` or `Float`, since
+    *                most of the weights in the _Algorithms_ 4th Ed. sample
+    *                files are decimal and truncating them to integers would
+    *                give you a lot of zeros)
+    * @return        a graph based on the one in the data file.
+    * @author        Aubrey Collins
+    */
+  def parse[V, W : Numeric](mkValue: () => V)(source: Source): Undigraph[V, W]
+    = {
+      val graph = new Undigraph[V, W]()
+
+      // read file as a sequence of strings
+      val lines: Seq[String] = source.getLines.toIndexedSeq
+      // the first line in the input file is the number of nodes
+      val numNodes = lines.headOption map (_ toInt) getOrElse 0
+      // create an array to store the new nodes and fill it with empty nodes
+      val nodes
+      = for { i <- 0 until numNodes } yield graph.node(mkValue())
+
+      //parse rest of file and make connections
+      for { ln <- lines.drop(2)
+            Array(to, from, weight) = ln.split(' ')
+      } {
+        nodes(to.toInt) ~> (nodes(from.toInt), weight.toDouble.asInstanceOf[W])
+      }
+
+      graph
+    }
 }

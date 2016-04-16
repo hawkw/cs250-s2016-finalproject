@@ -4,6 +4,7 @@ import edu.allegheny.graph.Directed
 import org.scalactic.Requirements
 
 import scala.{specialized => sp}
+import scala.languageFeature.postfixOps
 
 
 
@@ -54,4 +55,48 @@ extends EdgeWeighted[V, Weight]
   @inline final def foreach[U](f: (EdgeWeighted[V, Weight]#Node) => U): Unit
     = _nodes foreach f
 
+}
+
+object Digraph {
+
+  /**
+    * Parse an edge-weighted directed graph.
+    *
+    * Parse an edge-weighted directed graph from the edge-weighted graph
+    * description format from _Algorithms_, 4th Edition.
+    *
+    * @param mkValue a function that produces the values to place in each node.
+    * @param source  a `Source` containing the text to parse
+    * @tparam V      the type of the values in the graph
+    * @tparam W      the type of the weights in the graph (note that this
+    *                should probably be either `Double` or `Float`, since
+    *                most of the weights in the _Algorithms_ 4th Ed. sample
+    *                files are decimal and truncating them to integers would
+    *                give you a lot of zeros)
+    * @return        a graph based on the one in the data file.
+    * @author        Aubrey Collins
+    */
+  def parse[V, W : Numeric](mkValue: () => V)(source: io.Source): Digraph[V, W]
+    = {
+      val graph = new Digraph[V, W]()
+
+      // val f = Source.fromFile(new java.io.File(path))
+
+      // read file as a sequence of strings
+      val lines: Seq[String] = source.getLines.toIndexedSeq
+      // the first line in the input file is the number of nodes
+      val numNodes = lines.headOption map (_ toInt) getOrElse 0
+      // create an array to store the new nodes and fill it with empty nodes
+      val nodes
+      = for { i <- 0 until numNodes } yield graph.node(mkValue())
+
+      //parse rest of file and make connections
+      for { ln <- lines.drop(2)
+        Array(to, from, weight) = ln.split(' ')
+      } {
+        nodes(to.toInt) ~> (nodes(from.toInt), weight.toDouble.asInstanceOf[W])
+      }
+
+      graph
+    }
 }

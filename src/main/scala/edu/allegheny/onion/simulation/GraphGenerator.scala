@@ -8,6 +8,7 @@ import scala.language.postfixOps
   */
 object GraphGenerator {
 
+	@deprecated("use edgeWeighted.Undigraph.parse() instead")
 	def parse(source: io.Source): Network = {
 		val graph = new Network()
 
