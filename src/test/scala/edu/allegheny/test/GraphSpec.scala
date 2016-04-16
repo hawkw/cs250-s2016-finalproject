@@ -255,7 +255,7 @@ extends WordSpec
         val g = new edgeWeighted.Undigraph[Int, Double]
         val a = g node 1
         val b = g node 2
-        a <~> b
+        a <~> (b, 0.5)
         a.hasEdgeTo(b) shouldBe true
         b.hasEdgeTo(a) shouldBe true
       }
@@ -312,7 +312,7 @@ extends WordSpec
         val b = g nodes 3
         val path = a shortestPathTo b
         val shortest = Seq(a, g nodes 2, g nodes 7, b)
-        path shouldBe shortest 
+        path shouldBe shortest
       }
     }
   }
